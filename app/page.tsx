@@ -11,9 +11,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import { Sun, Moon } from "lucide-react"
-import { useTheme } from "@/hooks/use-theme"
-
 // Typewriter Effect Component
 function TypewriterEffect() {
   const phrases = [
@@ -126,15 +123,6 @@ export default function Portfolio() {
               </button>
             ))}
           </nav>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            className="rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800"
-          >
-            {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </Button>
-
           <Button
             variant="outline"
             size="sm"
