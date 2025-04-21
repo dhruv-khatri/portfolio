@@ -108,7 +108,7 @@ export default function Portfolio() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-zinc-800">
         <div className="container flex items-center justify-between h-16 px-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-lg">Alex Chen</span>
+            <span className="font-bold text-lg">Dhruv Khatri</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
             {["home", "about", "experience", "projects", "contact"].map((section) => (
@@ -163,7 +163,7 @@ export default function Portfolio() {
               transition={{ duration: 0.5 }}
               className="flex flex-col gap-6"
             >
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Alex Chen</h1>
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Dhruv Khatri</h1>
 
               <TypewriterEffect />
 
@@ -281,21 +281,27 @@ export default function Portfolio() {
             </TabsList>
             <TabsContent value="experience" className="space-y-8">
               <TimelineItem
-                year="2020 - Present"
-                title="Senior Bioinformatics Scientist"
-                company="GenomeTech Inc."
+                year="May 2024 - Present"
+                title="Undergraduate Research Assistant"
+                company="UCSD Computer Science and Engineering"
                 description="Lead computational analysis for single-cell RNA sequencing projects. Developed machine learning models to predict drug responses from genomic data. Collaborated with cross-functional teams to implement data pipelines."
               />
               <TimelineItem
-                year="2017 - 2020"
-                title="Data Scientist"
-                company="BioData Solutions"
+                year="June 2024 - September 2024"
+                title="Research and Development Intern"
+                company="Eli Lilly and Company"
                 description="Implemented statistical methods for analyzing clinical trial data. Created interactive dashboards for visualizing complex biological datasets. Optimized computational workflows for high-throughput sequencing analysis."
               />
               <TimelineItem
-                year="2015 - 2017"
-                title="Postdoctoral Researcher"
-                company="Stanford University"
+                year="April 2023 - December 2024"
+                title="Undergraduate Research Assistant"
+                company="UCSD School of Medicine"
+                description="Conducted research on computational methods for protein structure prediction. Published papers in top-tier journals on novel algorithms for genomic data analysis. Mentored graduate students on bioinformatics projects."
+              />
+              <TimelineItem
+                year="April 2023 - December 2024"
+                title="Research Study Assistant"
+                company="UCSD Health - Moores Cancer Center"
                 description="Conducted research on computational methods for protein structure prediction. Published papers in top-tier journals on novel algorithms for genomic data analysis. Mentored graduate students on bioinformatics projects."
               />
             </TabsContent>
@@ -449,7 +455,7 @@ export default function Portfolio() {
                   <div className="flex flex-col items-center p-6 rounded-lg bg-zinc-800/50 border border-zinc-700">
                     <Mail className="h-10 w-10 text-zinc-400 mb-4" />
                     <h3 className="text-lg font-medium mb-2">Email</h3>
-                    <p className="text-zinc-400 text-center">alex.chen@example.com</p>
+                    <p className="text-zinc-400 text-center">dkhatri383@gmail.com</p>
                     <Button variant="link" className="text-zinc-400 mt-2">
                       Send an email
                     </Button>
@@ -457,7 +463,7 @@ export default function Portfolio() {
                   <div className="flex flex-col items-center p-6 rounded-lg bg-zinc-800/50 border border-zinc-700">
                     <Github className="h-10 w-10 text-zinc-400 mb-4" />
                     <h3 className="text-lg font-medium mb-2">GitHub</h3>
-                    <p className="text-zinc-400 text-center">github.com/alexchen</p>
+                    <p className="text-zinc-400 text-center">github.com/dhruv-khatri</p>
                     <Button variant="link" className="text-zinc-400 mt-2">
                       View profile
                     </Button>
@@ -474,7 +480,7 @@ export default function Portfolio() {
         <div className="container px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0">
-              <span className="font-bold">Alex Chen</span>
+              <span className="font-bold">Dhruv Khatri</span>
             </div>
             <p className="text-zinc-500 text-sm">© {new Date().getFullYear()} All rights reserved.</p>
             <div className="flex gap-4 mt-4 md:mt-0">
