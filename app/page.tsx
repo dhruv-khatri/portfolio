@@ -155,8 +155,8 @@ export default function Portfolio() {
       <section id="home" className="min-h-screen flex items-center relative pt-16 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-zinc-950" />
 
-        <div className="container relative z-10 px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="container relative z-10 px-4 py-24 flex items-center justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-6xl w-full">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
