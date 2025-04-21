@@ -173,8 +173,17 @@ export default function Portfolio() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Button className="bg-zinc-700 hover:bg-zinc-600">View My Projects</Button>
-                <Button variant="outline" className="border-zinc-700 hover:bg-zinc-800">
+              <Button
+                className="bg-zinc-700 hover:bg-zinc-600"
+                onClick={() => scrollToSection("projects")}
+              >
+                View My Projects
+              </Button>
+                <Button
+                  variant="outline"
+                  className="border-zinc-700 hover:bg-zinc-800"
+                  onClick={() => scrollToSection("contact")}
+                >
                   Contact Me
                 </Button>
               </div>
