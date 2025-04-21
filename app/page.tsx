@@ -464,7 +464,7 @@ export default function Portfolio() {
                   <div className="flex flex-col items-center p-6 rounded-lg bg-zinc-800/50 border border-zinc-700">
                     <Mail className="h-10 w-10 text-zinc-400 mb-4" />
                     <h3 className="text-lg font-medium mb-2">Email</h3>
-                    <a href="dkhatri383@gmail.com">
+                    <a href="mailto:dkhatri383@gmail.com">
                       <Button variant="link" className="text-zinc-400 mt-2">
                         Send an email
                       </Button>
@@ -495,6 +495,7 @@ export default function Portfolio() {
             </div>
             <p className="text-zinc-500 text-sm">© {new Date().getFullYear()} All rights reserved.</p>
             <div className="flex gap-4 mt-4 md:mt-0">
+            <a href="https://www.linkedin.com/in/dhruvkhatri" target="_blank" rel="noopener noreferrer">
               <Button
                 variant="ghost"
                 size="icon"
@@ -517,6 +518,9 @@ export default function Portfolio() {
                   <circle cx="4" cy="4" r="2" />
                 </svg>
               </Button>
+            </a>
+
+            <a href="https://github.com/dhruv-khatri" target="_blank" rel="noopener noreferrer">
               <Button
                 variant="ghost"
                 size="icon"
@@ -538,6 +542,7 @@ export default function Portfolio() {
                   <path d="M9 18c-4.51 2-5-2-7-2" />
                 </svg>
               </Button>
+            </a>
             </div>
           </div>
         </div>
