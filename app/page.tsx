@@ -229,7 +229,7 @@ export default function Portfolio() {
               </p>
               <div className="flex items-center justify-center gap-2 text-zinc-400 mt-6">
                 <MapPin className="h-4 w-4 text-zinc-400" />
-                <span>San Francisco, California</span>
+                <span>San Diego, California</span>
               </div>
               <div className="flex flex-wrap justify-center gap-2 pt-4">
                 <Badge variant="outline" className="border-zinc-700 bg-zinc-800/50">
@@ -284,25 +284,32 @@ export default function Portfolio() {
                 year="May 2024 - Present"
                 title="Undergraduate Research Assistant"
                 company="UCSD Computer Science and Engineering"
-                description="Lead computational analysis for single-cell RNA sequencing projects. Developed machine learning models to predict drug responses from genomic data. Collaborated with cross-functional teams to implement data pipelines."
+                description="· Exploring the role of ecDNA on gene knockout results in various cancer cell lines using AmpliconArchitect.
+                            · Developed gene networks using Cytoscape .js tools to visualize co-amplification events and utilized python libraries for data analysis and statistical testing."
               />
               <TimelineItem
                 year="June 2024 - September 2024"
                 title="Research and Development Intern"
                 company="Eli Lilly and Company"
-                description="Implemented statistical methods for analyzing clinical trial data. Created interactive dashboards for visualizing complex biological datasets. Optimized computational workflows for high-throughput sequencing analysis."
+                description="· Utilized AI and computational tools for protein design and engineering to enhance early large molecule discovery pipeline.
+                            · Communicated findings in a 30-minute oral presentation to technical stakeholders and executive leaders along with 23 page report in Nature research format."
               />
               <TimelineItem
                 year="April 2023 - December 2024"
                 title="Undergraduate Research Assistant"
                 company="UCSD School of Medicine"
-                description="Conducted research on computational methods for protein structure prediction. Published papers in top-tier journals on novel algorithms for genomic data analysis. Mentored graduate students on bioinformatics projects."
+                description="· Developed a single-cell RNA-seq 10x pipeline using Linux and R to analyze sequenced mouse bone marrow cells for mRNA vaccine study, working with interdisciplinary team of biologists.
+                            · Data-mined TCGA and GTEx databases to provide insight into gene expression trends across 13 different cancers for ongoing projects.
+                            · Collaborated with a team of bioinformaticians to optimize pipeline shell scripts for use on remote supercomputer.
+                            · Developed in-depth tutorials on GitHub for future lab bioinformaticians to understand pipelines and workflow."
               />
               <TimelineItem
                 year="April 2023 - December 2024"
                 title="Research Study Assistant"
                 company="UCSD Health - Moores Cancer Center"
-                description="Conducted research on computational methods for protein structure prediction. Published papers in top-tier journals on novel algorithms for genomic data analysis. Mentored graduate students on bioinformatics projects."
+                description="· Assisted in administration of California Educator Tobacco Survey (CETS) with 2,000+ participating schools and 100,000+ participants in collaboration with California Department of Education.
+                            · Developed a database of school contact information, designed survey using Qualtrics, and distributed to participants using Qualtrics API.
+                            · Continued to follow up on survey results, regularly cleaning data and generating visualizations to present and publish findings."
               />
             </TabsContent>
             <TabsContent value="skills">
