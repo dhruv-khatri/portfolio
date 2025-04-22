@@ -437,7 +437,7 @@ export default function Portfolio() {
             <ProjectCard
               title="Brease Cancer Detection"
               description="Machine learning model to classify breast cancer tumors as malignant or benign based on tumor cell nuclei characteristics."
-              image="/placeholder.svg?height=200&width=400"
+              image="/Breast_cancer_detection_logo.png?height=200&width=400"
               tags={["Sci-kit Learn", "Jupyter", "Python", "Linear Regression"]}
               github="https://github.com/dhruv-khatri/Breast-Cancer-Detection"
               demo="https://example.com"
