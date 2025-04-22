@@ -295,7 +295,7 @@ export default function Portfolio() {
             <TabsContent value="experience" className="space-y-8">
               <TimelineItem
                 year="May 2024 - Present"
-                title="Undergraduate Research Assistant"
+                title="Undergraduate Research Assistant - Bafna Lab"
                 company="UCSD Computer Science and Engineering"
                 description={`· Exploring the role of ecDNA on gene knockout results in various cancer cell lines using AmpliconArchitect.\n· Developed gene networks using Cytoscape .js tools to visualize co-amplification events and utilized python libraries for data analysis and statistical testing.`}
               />
@@ -307,12 +307,12 @@ export default function Portfolio() {
               />
               <TimelineItem
                 year="April 2023 - December 2024"
-                title="Undergraduate Research Assistant"
+                title="Undergraduate Research Assistant - Rana Lab"
                 company="UCSD School of Medicine"
                 description={`· Developed a single-cell RNA-seq 10x pipeline using Linux and R to analyze sequenced mouse bone marrow cells for mRNA vaccine study, working with interdisciplinary team of biologists.\n· Data-mined TCGA and GTEx databases to provide insight into gene expression trends across 13 different cancers for ongoing projects.\n· Collaborated with a team of bioinformaticians to optimize pipeline shell scripts for use on remote supercomputer.\n· Developed in-depth tutorials on GitHub for future lab bioinformaticians to understand pipelines and workflow.`}
               />
               <TimelineItem
-                year="April 2023 - December 2024"
+                year="August 2023 - May 2024"
                 title="Research Study Assistant"
                 company="UCSD Health - Moores Cancer Center"
                 description={`· Assisted in administration of California Educator Tobacco Survey (CETS) with 2,000+ participating schools and 100,000+ participants in collaboration with California Department of Education.\n· Developed a database of school contact information, designed survey using Qualtrics, and distributed to participants using Qualtrics API.\n· Continued to follow up on survey results, regularly cleaning data and generating visualizations to present and publish findings.`}
@@ -421,7 +421,7 @@ export default function Portfolio() {
             <ProjectCard
               title="Melanoma Detection"
               description="Computer vision based model to predict whether a skin discolorations are cancerous based on images."
-              image="/placeholder.svg?height=200&width=400"
+              image="/Melanoma_detection_logo.png?height=200&width=400"
               tags={["TensorFlow", "Python", "Computer Vision"]}
               github="https://github.com"
               demo="https://example.com"
