@@ -419,10 +419,10 @@ export default function Portfolio() {
               demo="https://example.com"
             /> */}
             <ProjectCard
-              title="BioSeqAnalyzer"
-              description="Command-line tool for rapid analysis of biological sequences with customizable workflows."
+              title="Melanoma Detection"
+              description="Computer vision based model to predict whether a skin discolorations are cancerous based on images."
               image="/placeholder.svg?height=200&width=400"
-              tags={["Bioinformatics", "CLI", "Python"]}
+              tags={["TensorFlow", "Python", "Computer Vision"]}
               github="https://github.com"
               demo="https://example.com"
             />
