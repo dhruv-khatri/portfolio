@@ -103,7 +103,7 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white" ref={containerRef}>
+    <div className="min-h-screen bg-[#fdfcf7] text-black" ref={containerRef}>
       {/* Navigation */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-zinc-800">
         <div className="container flex items-center justify-between h-16 px-4">
