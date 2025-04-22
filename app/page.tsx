@@ -429,7 +429,7 @@ export default function Portfolio() {
             <ProjectCard
               title="Connect Four Outcome Prediction"
               description="Machine learning model to predict connect four game winner based on early game board states (8 total turns elapsed)."
-              image="/placeholder.svg?height=200&width=400"
+              image="/Connect4_logo.png?height=200&width=400"
               tags={["Machine Learning", "Spatial Analysis", "Python", "Jupyter"]}
               github="https://github.com/dhruv-khatri/Connect-4-Prediction"
               demo="https://example.com"
