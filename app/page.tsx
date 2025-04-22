@@ -427,19 +427,19 @@ export default function Portfolio() {
               demo="https://example.com"
             />
             <ProjectCard
-              title="Single-Cell Explorer"
-              description="Web application for interactive exploration of single-cell RNA sequencing data."
+              title="Connect Four Outcome Prediction"
+              description="Machine learning model to predict connect four game winner based on early game board states (8 total turns elapsed)."
               image="/placeholder.svg?height=200&width=400"
-              tags={["R", "Shiny", "Single-cell"]}
-              github="https://github.com"
+              tags={["Machine Learning", "Spatial Analysis", "Python", "Jupyter"]}
+              github="https://github.com/dhruv-khatri/Connect-4-Prediction"
               demo="https://example.com"
             />
             <ProjectCard
               title="Brease Cancer Detection"
-              description="Machine learning model to classify breast cancer tumors as malignant or benign based on tumore cell nuceli characteristics."
+              description="Machine learning model to classify breast cancer tumors as malignant or benign based on tumor cell nuclei characteristics."
               image="/placeholder.svg?height=200&width=400"
               tags={["Sci-kit Learn", "Jupyter", "Python", "Linear Regression"]}
-              github="https://https://github.com/dhruv-khatri/Connect-4-Prediction.com"
+              github="https://github.com/dhruv-khatri/Breast-Cancer-Detection"
               demo="https://example.com"
             />
           </div>
