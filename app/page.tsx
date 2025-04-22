@@ -394,7 +394,7 @@ export default function Portfolio() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ProjectCard
+            {/* <ProjectCard
               title="GenomeViz"
               description="An interactive visualization tool for exploring genomic data, supporting various data types and annotations."
               image="/placeholder.svg?height=200&width=400"
@@ -417,7 +417,7 @@ export default function Portfolio() {
               tags={["Deep Learning", "PyTorch", "Structural Biology"]}
               github="https://github.com"
               demo="https://example.com"
-            />
+            /> */}
             <ProjectCard
               title="BioSeqAnalyzer"
               description="Command-line tool for rapid analysis of biological sequences with customizable workflows."
@@ -435,11 +435,11 @@ export default function Portfolio() {
               demo="https://example.com"
             />
             <ProjectCard
-              title="PathwayNet"
-              description="Network analysis tool for identifying significant biological pathways in multi-omics datasets."
+              title="Brease Cancer Detection"
+              description="Machine learning model to classify breast cancer tumors as malignant or benign based on tumore cell nuceli characteristics."
               image="/placeholder.svg?height=200&width=400"
-              tags={["Network Analysis", "R", "Systems Biology"]}
-              github="https://github.com"
+              tags={["Sci-kit Learn", "Jupyter", "Python", "Linear Regression"]}
+              github="https://https://github.com/dhruv-khatri/Connect-4-Prediction.com"
               demo="https://example.com"
             />
           </div>
