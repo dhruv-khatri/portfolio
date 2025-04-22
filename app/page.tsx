@@ -18,7 +18,6 @@ function TypewriterEffect() {
     "ML engineer, Researcher, and Data Scientist",
     "Translating Data into Meaningful Insights",
     "Creating Fast, Scalable Software Systems",
-    "On the lookout for the next big thing",
     "Basketball, Cars, Code, and Coffee",
   ]
 
