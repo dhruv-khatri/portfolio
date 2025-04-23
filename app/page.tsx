@@ -199,7 +199,7 @@ export default function Portfolio() {
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-gray-200 to-gray-300 blur-xl opacity-70" />
                 <div className="absolute inset-0 rounded-full border-2 border-dashed border-gray-300 animate-spin-slow" />
                 <Image
-                  src="/placeholder.svg?height=320&width=320"
+                  src="/Computer_image.png?height=320&width=320"
                   alt="Profile"
                   width={320}
                   height={320}
