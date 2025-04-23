@@ -227,14 +227,21 @@ export default function Portfolio() {
             </div>
             <div className="space-y-4 text-gray-700">
               <p>
-                I'm a bioinformatician and data scientist with a passion for developing computational methods to analyze
-                complex biological data. With a background in computer science and molecular biology, I bridge the gap
-                between cutting-edge technology and biological research.
+                I'm a computer and data scientist with a focus on applying computational techniques to solve 
+                challenges in biomedical and biological research. With a foundation in computer science, data 
+                engineering, and molecular biology, I specialize in designing scalable algorithms and analytical 
+                tools to extract insights from high-dimensional biological datasets.
               </p>
               <p>
-                My research focuses on genomic data analysis, machine learning applications in healthcare, and
-                developing tools that make complex data more accessible to researchers. I'm particularly interested in
-                single-cell genomics and the application of deep learning to predict protein structures and functions.
+                My work spans machine learning applications in healthcare, large-scale genomic data analysis, 
+                and the development of AI-driven pipelines for predictive modeling. I'm especially interested 
+                in single-cell omics, integrative multi-modal analysis, and leveraging deep learning to advance 
+                our understanding of protein function, gene regulation, and disease mechanisms.
+              </p>
+              <p>
+                In my free time you can catch me playing basketball or golf, trying out new restaurants, or
+                driving around southern California. I love exploring new places and experiences which 
+                push me out of my comfort zone. 
               </p>
               <div className="flex items-center justify-center gap-2 text-gray-600 mt-6">
                 <MapPin className="h-4 w-4 text-gray-500" />
