@@ -443,7 +443,7 @@ export default function Portfolio() {
               image="/Connect4_logo.png?height=200&width=400"
               tags={["Machine Learning", "Spatial Analysis", "Python", "Jupyter"]}
               github="https://github.com/dhruv-khatri/Connect-4-Prediction"
-              demo="https://example.com"
+              // demo="https://example.com"
             />
             <ProjectCard
               title="Breast Cancer Detection"
@@ -451,7 +451,7 @@ export default function Portfolio() {
               image="/Breast_cancer_detection_logo.png?height=200&width=400"
               tags={["Sci-kit Learn", "Jupyter", "Python", "Linear Regression"]}
               github="https://github.com/dhruv-khatri/Breast-Cancer-Detection"
-              demo="https://example.com"
+              // demo="https://example.com"
             />
           </div>
         </div>
