@@ -239,7 +239,7 @@ export default function Portfolio() {
                 our understanding of protein function, gene regulation, and disease mechanisms.
               </p>
               <p>
-                In my free time you can catch me playing basketball or golf, trying out new restaurants, or
+                In my free time you can catch me playing basketball and golf, trying out new restaurants, or
                 driving around southern California. I love exploring new places and experiences which 
                 push me out of my comfort zone. 
               </p>
@@ -394,10 +394,6 @@ export default function Portfolio() {
           >
             <h2 className="text-3xl font-bold mb-2 text-black">Featured Projects</h2>
             <div className="w-20 h-1 bg-gray-400 rounded-full mx-auto mb-6" />
-            <p className="text-gray-700 max-w-2xl mx-auto">
-              A selection of research projects and software tools I've developed to advance bioinformatics and data
-              science.
-            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -442,7 +438,7 @@ export default function Portfolio() {
               demo="https://example.com"
             />
             <ProjectCard
-              title="Brease Cancer Detection"
+              title="Breast Cancer Detection"
               description="Machine learning model to classify breast cancer tumors as malignant or benign based on tumor cell nuclei characteristics."
               image="/Breast_cancer_detection_logo.png?height=200&width=400"
               tags={["Sci-kit Learn", "Jupyter", "Python", "Linear Regression"]}
