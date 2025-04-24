@@ -423,7 +423,10 @@ export default function Portfolio() {
             /> */}
             <ProjectCard
               title="Health xAI"
-              description="IOS application which uses health data to generate personalized actions for optimizing daily health. "
+              description="Health xAI is a minimalist wellness app that integrates with Apple Health to provide personalized insights 
+              for sleep, activity, heart rate variability, and recovery. It uses an AI engine powered by Claude to generate daily 
+              health suggestions based on real-time biometric trends. With a clean interface and intuitive visuals, 
+              the app helps users optimize longevity and performance through subtle, intelligent nudges."
               image="/HealthxAI_logo.png?height=200&width=400"
               tags={["Swift", "Flask", "Python API", "Generative AI"]}
               // github=
@@ -431,7 +434,8 @@ export default function Portfolio() {
             />
             <ProjectCard
               title="Melanoma Detection"
-              description="Computer vision based model to predict whether a skin discolorations are cancerous based on images."
+              description="Computer vision and deep learning to predict whether a skin discolorations are cancerous based on image data. 
+              Built with TensorFlow and Python, the model analyzes visual patterns to support early melanoma identification."
               image="/Melanoma_detection_logo.png?height=200&width=400"
               tags={["TensorFlow", "Python", "Computer Vision"]}
               // github="https://github.com"
