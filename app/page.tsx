@@ -422,12 +422,20 @@ export default function Portfolio() {
               demo="https://example.com"
             /> */}
             <ProjectCard
+              title="Health xAI"
+              description="IOS application which uses health data to generate personalized actions for optimizing daily health. "
+              image="/HealthxAI_logo.png?height=200&width=400"
+              tags={["Swift", "Flask", "Python API", "Generative AI"]}
+              // github=
+              // demo=
+            />
+            <ProjectCard
               title="Melanoma Detection"
               description="Computer vision based model to predict whether a skin discolorations are cancerous based on images."
               image="/Melanoma_detection_logo.png?height=200&width=400"
               tags={["TensorFlow", "Python", "Computer Vision"]}
-              github="https://github.com"
-              demo="https://example.com"
+              // github="https://github.com"
+              // demo="https://example.com"
             />
             <ProjectCard
               title="Connect Four Outcome Prediction"
@@ -644,28 +652,32 @@ function ProjectCard({ title, description, image, tags, github, demo }) {
           </div>
         </CardContent>
         <CardFooter className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 gap-1 border-gray-700 bg-gray-800 text-white hover:bg-gray-700"
-            asChild
-          >
-            <Link href={github}>
-              <Github className="h-4 w-4" />
-              Code
-            </Link>
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 gap-1 border-gray-700 bg-gray-800 text-white hover:bg-gray-700"
-            asChild
-          >
-            <Link href={demo}>
-              <ExternalLink className="h-4 w-4" />
-              Demo
-            </Link>
-          </Button>
+          {github && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 gap-1 border-gray-700 bg-gray-800 text-white hover:bg-gray-700"
+              asChild
+            >
+              <Link href={github}>
+                <Github className="h-4 w-4" />
+                Code
+              </Link>
+            </Button>
+          )}
+          {demo && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 gap-1 border-gray-700 bg-gray-800 text-white hover:bg-gray-700"
+              asChild
+            >
+              <Link href={demo}>
+                <ExternalLink className="h-4 w-4" />
+                Demo
+              </Link>
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </motion.div>
