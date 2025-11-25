@@ -201,8 +201,8 @@ export default function Portfolio() {
       </div>
 
       {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center relative pt-8 pb-10 overflow-hidden">
-        <div className="container relative z-10 px-4 py-14 md:py-18 flex items-center justify-center">
+      <section id="home" className="min-h-screen flex items-center relative pt-6 pb-10 overflow-hidden">
+        <div className="container relative z-10 px-4 py-12 md:py-16 flex items-center justify-center">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center max-w-6xl w-full">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
