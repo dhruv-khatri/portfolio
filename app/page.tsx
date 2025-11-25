@@ -116,21 +116,21 @@ export default function Portfolio() {
   return (
     <div
       className={`min-h-screen relative overflow-hidden transition-colors duration-500 ${
-        isDark ? "bg-slate-950 text-slate-50" : "bg-[#f4eee2] text-slate-900"
+        isDark ? "bg-slate-950 text-slate-50" : "bg-[#f6f1e6] text-slate-900"
       }`}
       ref={containerRef}
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-10 top-[-10%] h-72 w-72 rounded-full bg-gradient-to-br from-emerald-300/30 via-cyan-300/25 to-blue-500/20 blur-3xl" />
-        <div className="absolute right-[-10%] top-[15%] h-80 w-80 rounded-full bg-gradient-to-br from-amber-300/30 via-orange-400/25 to-pink-400/20 blur-3xl" />
-        <div className="absolute bottom-[-20%] left-[20%] h-96 w-96 rounded-full bg-gradient-to-br from-emerald-400/20 via-teal-300/15 to-blue-400/10 blur-3xl" />
+        <div className="absolute -left-10 top-[-10%] h-72 w-72 rounded-full bg-gradient-to-br from-amber-200/30 via-rose-200/25 to-purple-300/20 blur-3xl" />
+        <div className="absolute right-[-10%] top-[15%] h-80 w-80 rounded-full bg-gradient-to-br from-amber-300/30 via-rose-300/25 to-purple-400/20 blur-3xl" />
+        <div className="absolute bottom-[-20%] left-[20%] h-96 w-96 rounded-full bg-gradient-to-br from-amber-400/20 via-rose-300/15 to-purple-400/10 blur-3xl" />
       </div>
       {/* Navigation */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/60 dark:bg-slate-950/70 backdrop-blur-xl">
         <div className="container flex items-center justify-between h-16 px-4">
           <div className="flex items-center gap-2">
             <span className="font-bold text-lg tracking-tight">
-              Dhruv <span className="text-emerald-500">Khatri</span>
+              Dhruv <span className="text-amber-500">Khatri</span>
             </span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
@@ -146,46 +146,71 @@ export default function Portfolio() {
               >
                 {section.charAt(0).toUpperCase() + section.slice(1)}
                 {activeSection === section && (
-                  <span className="absolute -bottom-2 left-0 right-0 mx-auto h-0.5 w-6 rounded-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500" />
+                  <span className="absolute -bottom-2 left-0 right-0 mx-auto h-0.5 w-6 rounded-full bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500" />
                 )}
               </button>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="flex text-slate-700 dark:text-slate-200 hover:bg-white/70 dark:hover:bg-slate-800/70"
-            >
-              {mounted && isDark ? <SunMedium className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden md:inline-flex border-transparent bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 text-slate-900 font-semibold shadow-lg shadow-emerald-200/60 hover:from-emerald-300 hover:to-cyan-400"
-            >
-              Resume
-            </Button>
-            <Button variant="ghost" size="icon" className="md:hidden text-slate-900 dark:text-slate-100">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-menu"
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex flex-col items-end gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-transparent bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 text-slate-900 font-semibold shadow-lg shadow-orange-200/60 hover:from-amber-200 hover:to-rose-400"
               >
-                <line x1="4" x2="20" y1="12" y2="12" />
-                <line x1="4" x2="20" y1="6" y2="6" />
-                <line x1="4" x2="20" y1="18" y2="18" />
-              </svg>
-            </Button>
+                Resume
+              </Button>
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="group inline-flex items-center gap-2 rounded-full border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/70 px-3 py-1 shadow-sm hover:border-amber-300/80 dark:hover:border-amber-500/60 transition"
+              >
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-300">Light</span>
+                <div className="relative h-6 w-14 rounded-full bg-gradient-to-r from-amber-200 via-rose-200 to-purple-200 dark:from-slate-800 dark:to-slate-700 transition-colors">
+                  <span
+                    className={`absolute top-0.5 left-1 h-5 w-5 rounded-full bg-white dark:bg-slate-900 shadow-sm transition-transform duration-300 ${
+                      mounted && isDark ? "translate-x-7" : ""
+                    }`}
+                  />
+                  <SunMedium className="absolute left-1 top-1.5 h-3 w-3 text-amber-500" />
+                  <Moon className="absolute right-1 top-1.5 h-3 w-3 text-slate-600 dark:text-slate-200" />
+                </div>
+                <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Dark</span>
+              </button>
+            </div>
+            <div className="flex items-center md:hidden gap-2">
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="group inline-flex items-center gap-2 rounded-full border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/70 px-3 py-1 shadow-sm hover:border-amber-300/80 dark:hover:border-amber-500/60 transition"
+              >
+                <div className="relative h-6 w-12 rounded-full bg-gradient-to-r from-amber-200 via-rose-200 to-purple-200 dark:from-slate-800 dark:to-slate-700 transition-colors">
+                  <span
+                    className={`absolute top-0.5 left-1 h-5 w-5 rounded-full bg-white dark:bg-slate-900 shadow-sm transition-transform duration-300 ${
+                      mounted && isDark ? "translate-x-6" : ""
+                    }`}
+                  />
+                </div>
+              </button>
+              <Button variant="ghost" size="icon" className="text-slate-900 dark:text-slate-100">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-menu"
+                >
+                  <line x1="4" x2="20" y1="12" y2="12" />
+                  <line x1="4" x2="20" y1="6" y2="6" />
+                  <line x1="4" x2="20" y1="18" y2="18" />
+                </svg>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -200,8 +225,8 @@ export default function Portfolio() {
               transition={{ duration: 0.5 }}
               className="flex flex-col gap-6"
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-600 dark:text-slate-300 w-fit shadow-md shadow-emerald-200/40">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-600 dark:text-slate-300 w-fit shadow-md shadow-orange-200/50">
+                <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
                 Computational Biology + ML
               </div>
               <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
@@ -217,7 +242,7 @@ export default function Portfolio() {
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <Button
-                  className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 text-slate-900 font-semibold shadow-lg shadow-emerald-200/50 hover:from-emerald-300 hover:to-cyan-400"
+                  className="bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 text-slate-900 font-semibold shadow-lg shadow-orange-200/50 hover:from-amber-200 hover:to-rose-400"
                   onClick={() => scrollToSection("projects")}
                 >
                   View My Projects
@@ -257,8 +282,8 @@ export default function Portfolio() {
               className="flex justify-center md:justify-end"
             >
               <div className="relative w-64 h-64 md:w-80 md:h-80">
-                <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-emerald-300/40 via-cyan-300/30 to-blue-500/30 blur-3xl" />
-                <div className="absolute inset-4 rounded-3xl border border-white/50 dark:border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-2xl shadow-emerald-200/30" />
+                <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-amber-300/35 via-rose-300/30 to-purple-500/30 blur-3xl" />
+                <div className="absolute inset-4 rounded-3xl border border-white/50 dark:border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-2xl shadow-orange-200/30" />
                 <div className="absolute inset-0 rounded-3xl border-2 border-dashed border-white/60 dark:border-slate-700 animate-spin-slow" />
                 <Image
                   src="/Computer_image.png?height=320&width=320"
@@ -284,11 +309,11 @@ export default function Portfolio() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="max-w-4xl mx-auto rounded-3xl border border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-950/50 p-10 shadow-2xl shadow-emerald-200/30 backdrop-blur-xl"
+            className="max-w-4xl mx-auto rounded-3xl border border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-950/50 p-10 shadow-2xl shadow-orange-200/40 backdrop-blur-xl"
           >
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-2">About Me</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 rounded-full mx-auto mb-6" />
+              <div className="w-24 h-1 bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 rounded-full mx-auto mb-6" />
             </div>
             <div className="space-y-4 text-slate-600 dark:text-slate-300">
               <p>
@@ -309,7 +334,7 @@ export default function Portfolio() {
                 zone.
               </p>
               <div className="flex items-center justify-center gap-2 text-slate-500 dark:text-slate-300 mt-6">
-                <MapPin className="h-4 w-4 text-emerald-500" />
+                <MapPin className="h-4 w-4 text-amber-500" />
                 <span>San Diego, California</span>
               </div>
               <div className="flex flex-wrap justify-center gap-2 pt-4">
@@ -318,7 +343,7 @@ export default function Portfolio() {
                     <Badge
                       key={skill}
                       variant="outline"
-                      className="border-transparent bg-emerald-50 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-200"
+                      className="border-transparent bg-amber-50 text-amber-900 dark:bg-amber-500/10 dark:text-amber-200"
                     >
                       {skill}
                     </Badge>
@@ -341,7 +366,7 @@ export default function Portfolio() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl font-bold mb-2">Experience & Skills</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 rounded-full mx-auto mb-6" />
+            <div className="w-24 h-1 bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 rounded-full mx-auto mb-6" />
             <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
               My professional journey combines academic research, industry experience, and continuous learning in the
               rapidly evolving fields of bioinformatics and data science.
@@ -352,13 +377,13 @@ export default function Portfolio() {
             <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/60 dark:bg-slate-950/60 border border-slate-200/60 dark:border-slate-800/60 backdrop-blur rounded-2xl p-1 shadow-sm">
               <TabsTrigger
                 value="experience"
-                className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-400 data-[state=active]:via-cyan-400 data-[state=active]:to-blue-500 data-[state=active]:text-slate-900 font-semibold rounded-xl"
+                className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-300 data-[state=active]:via-rose-400 data-[state=active]:to-purple-500 data-[state=active]:text-slate-900 font-semibold rounded-xl"
               >
                 Work Experience
               </TabsTrigger>
               <TabsTrigger
                 value="skills"
-                className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-400 data-[state=active]:via-cyan-400 data-[state=active]:to-blue-500 data-[state=active]:text-slate-900 font-semibold rounded-xl"
+                className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-300 data-[state=active]:via-rose-400 data-[state=active]:to-purple-500 data-[state=active]:text-slate-900 font-semibold rounded-xl"
               >
                 Technical Skills
               </TabsTrigger>
@@ -392,7 +417,7 @@ export default function Portfolio() {
             <TabsContent value="skills">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <SkillCategory
-                  icon={<Dna className="h-6 w-6 text-emerald-500" />}
+                  icon={<Dna className="h-6 w-6 text-amber-500" />}
                   title="Bioinformatics"
                   skills={[
                     "Genomic Analysis",
@@ -403,7 +428,7 @@ export default function Portfolio() {
                   ]}
                 />
                 <SkillCategory
-                  icon={<Database className="h-6 w-6 text-emerald-500" />}
+                  icon={<Database className="h-6 w-6 text-amber-500" />}
                   title="Data Science"
                   skills={[
                     "Machine Learning",
@@ -414,7 +439,7 @@ export default function Portfolio() {
                   ]}
                 />
                 <SkillCategory
-                  icon={<Code className="h-6 w-6 text-emerald-500" />}
+                  icon={<Code className="h-6 w-6 text-amber-500" />}
                   title="Programming"
                   skills={["Python", "R", "SQL", "Bash", "C++", "JavaScript"]}
                 />
@@ -430,7 +455,7 @@ export default function Portfolio() {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="lucide lucide-flask-conical h-6 w-6 text-emerald-500"
+                      className="lucide lucide-flask-conical h-6 w-6 text-amber-500"
                     >
                       <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
                       <path d="M8.5 2h7" />
@@ -457,7 +482,7 @@ export default function Portfolio() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl font-bold mb-2">Featured Projects</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 rounded-full mx-auto mb-6" />
+            <div className="w-24 h-1 bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 rounded-full mx-auto mb-6" />
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -536,7 +561,7 @@ export default function Portfolio() {
             className="max-w-3xl mx-auto text-center"
           >
             <h2 className="text-3xl font-bold mb-2">Get In Touch</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 rounded-full mx-auto mb-6" />
+            <div className="w-24 h-1 bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 rounded-full mx-auto mb-6" />
             <p className="text-slate-600 dark:text-slate-300 mb-8">
               Interested in collaboration or have questions about my work? Feel free to reach out!
             </p>
@@ -545,7 +570,7 @@ export default function Portfolio() {
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col items-center p-6 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/60 dark:border-slate-800/60 shadow-sm">
-                    <Mail className="h-10 w-10 text-emerald-500 mb-4" />
+                    <Mail className="h-10 w-10 text-amber-500 mb-4" />
                     <h3 className="text-lg font-medium mb-2">Email</h3>
                     <a href="mailto:dkhatri383@gmail.com">
                       <Button variant="link" className="text-slate-700 dark:text-slate-200 mt-2">
@@ -554,7 +579,7 @@ export default function Portfolio() {
                     </a>
                   </div>
                   <div className="flex flex-col items-center p-6 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/60 dark:border-slate-800/60 shadow-sm">
-                    <Github className="h-10 w-10 text-emerald-500 mb-4" />
+                    <Github className="h-10 w-10 text-amber-500 mb-4" />
                     <h3 className="text-lg font-medium mb-2">GitHub</h3>
                     <a href="https://github.com/dhruv-khatri" target="_blank" rel="noopener noreferrer">
                       <Button variant="link" className="text-slate-700 dark:text-slate-200 mt-2">
@@ -651,11 +676,11 @@ function TimelineItem({ year, title, company, description }) {
       className="flex gap-4"
     >
       <div className="flex flex-col items-center">
-        <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-lg shadow-emerald-200/70" />
+        <div className="w-3 h-3 rounded-full bg-amber-400 shadow-lg shadow-orange-200/70" />
         <div className="w-0.5 h-full bg-slate-200 dark:bg-slate-800" />
       </div>
       <div className="pb-8">
-        <span className="text-sm font-medium text-emerald-500">{year}</span>
+        <span className="text-sm font-medium text-amber-500">{year}</span>
         <h3 className="text-xl font-bold mt-1 text-slate-900 dark:text-white">{title}</h3>
         <p className="text-slate-500 dark:text-slate-300">{company}</p>
         <div className="mt-2 space-y-1">{descriptionLines}</div>
@@ -667,7 +692,7 @@ function TimelineItem({ year, title, company, description }) {
 // Skill Category Component
 function SkillCategory({ icon, title, skills }) {
   return (
-    <Card className="bg-white/70 dark:bg-slate-950/60 border-slate-200/60 dark:border-slate-800/60 backdrop-blur-xl shadow-lg shadow-emerald-200/30">
+    <Card className="bg-white/70 dark:bg-slate-950/60 border-slate-200/60 dark:border-slate-800/60 backdrop-blur-xl shadow-lg shadow-orange-200/40">
       <CardHeader className="pb-2">
         <div className="flex items-center gap-2">
           {icon}
@@ -678,7 +703,7 @@ function SkillCategory({ icon, title, skills }) {
         <ul className="space-y-2">
           {skills.map((skill, index) => (
             <li key={index} className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
               <span>{skill}</span>
             </li>
           ))}
@@ -697,7 +722,7 @@ function ProjectCard({ title, description, image, tags, github, demo }) {
       transition={{ duration: 0.5 }}
       viewport={{ once: true }}
     >
-      <Card className="overflow-hidden bg-white/70 dark:bg-slate-950/60 border-slate-200/60 dark:border-slate-800/60 h-full flex flex-col backdrop-blur-xl shadow-xl shadow-emerald-200/30">
+      <Card className="overflow-hidden bg-white/70 dark:bg-slate-950/60 border-slate-200/60 dark:border-slate-800/60 h-full flex flex-col backdrop-blur-xl shadow-xl shadow-orange-200/40">
         <div className="relative h-48 overflow-hidden">
           <Image
             src={image || "/placeholder.svg"}
@@ -716,7 +741,7 @@ function ProjectCard({ title, description, image, tags, github, demo }) {
               <Badge
                 key={index}
                 variant="secondary"
-                className="bg-emerald-50 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-200 border-transparent"
+                className="bg-amber-50 text-amber-900 dark:bg-amber-500/10 dark:text-amber-200 border-transparent"
               >
                 {tag}
               </Badge>
@@ -728,7 +753,7 @@ function ProjectCard({ title, description, image, tags, github, demo }) {
             <Button
               variant="outline"
               size="sm"
-              className="flex-1 gap-1 border-transparent bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 text-slate-900 font-semibold shadow-md hover:from-emerald-300 hover:to-cyan-400"
+              className="flex-1 gap-1 border-transparent bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 text-slate-900 font-semibold shadow-md hover:from-amber-200 hover:to-rose-400"
               asChild
             >
               <Link href={github}>
