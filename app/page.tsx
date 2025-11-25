@@ -78,6 +78,13 @@ export default function Portfolio() {
     setMounted(true)
   }, [])
 
+  // Always start visits in light mode by clearing saved preference
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("portfolio-theme-v2")
+    }
+  }, [])
+
   const activeTheme = (resolvedTheme ?? theme ?? "light") as string
   const isDark = activeTheme === "dark"
   const toggleTheme = () => setTheme(isDark ? "light" : "dark")
