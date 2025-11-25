@@ -180,7 +180,7 @@ export default function Portfolio() {
       </header>
 
       {/* Theme Switcher */}
-      <div className="container px-4 pt-12 md:pt-14 flex justify-end translate-y-2 md:translate-y-3">
+      <div className="container px-4 pt-12 md:pt-14 flex justify-end translate-y-4 md:translate-y-6">
         <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/70 px-3 py-1 shadow-sm hover:border-amber-300/80 dark:hover:border-amber-500/60 transition">
           <span className="text-xs font-semibold text-slate-500 dark:text-slate-300">Light</span>
           <button
