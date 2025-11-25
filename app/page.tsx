@@ -129,9 +129,7 @@ export default function Portfolio() {
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/60 dark:bg-slate-950/70 backdrop-blur-xl">
         <div className="container flex items-center justify-between h-16 px-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-lg tracking-tight">
-              Dhruv <span className="text-amber-500">Khatri</span>
-            </span>
+            <span className="font-bold text-lg tracking-tight text-slate-900 dark:text-white">Dhruv Khatri</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
             {["home", "about", "experience", "projects", "contact"].map((section) => (
@@ -152,68 +150,55 @@ export default function Portfolio() {
             ))}
           </nav>
           <div className="flex items-center gap-3">
-            <div className="hidden md:flex flex-col items-end gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-transparent bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 text-slate-900 font-semibold shadow-lg shadow-orange-200/60 hover:from-amber-200 hover:to-rose-400"
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden md:inline-flex border-transparent bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 text-slate-900 font-semibold shadow-lg shadow-orange-200/60 hover:from-amber-200 hover:to-rose-400"
+            >
+              Resume
+            </Button>
+            <Button variant="ghost" size="icon" className="text-slate-900 dark:text-slate-100 md:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-menu"
               >
-                Resume
-              </Button>
-              <button
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-                className="group inline-flex items-center gap-2 rounded-full border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/70 px-3 py-1 shadow-sm hover:border-amber-300/80 dark:hover:border-amber-500/60 transition"
-              >
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-300">Light</span>
-                <div className="relative h-6 w-14 rounded-full bg-gradient-to-r from-amber-200 via-rose-200 to-purple-200 dark:from-slate-800 dark:to-slate-700 transition-colors">
-                  <span
-                    className={`absolute top-0.5 left-1 h-5 w-5 rounded-full bg-white dark:bg-slate-900 shadow-sm transition-transform duration-300 ${
-                      mounted && isDark ? "translate-x-7" : ""
-                    }`}
-                  />
-                  <SunMedium className="absolute left-1 top-1.5 h-3 w-3 text-amber-500" />
-                  <Moon className="absolute right-1 top-1.5 h-3 w-3 text-slate-600 dark:text-slate-200" />
-                </div>
-                <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Dark</span>
-              </button>
-            </div>
-            <div className="flex items-center md:hidden gap-2">
-              <button
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-                className="group inline-flex items-center gap-2 rounded-full border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/70 px-3 py-1 shadow-sm hover:border-amber-300/80 dark:hover:border-amber-500/60 transition"
-              >
-                <div className="relative h-6 w-12 rounded-full bg-gradient-to-r from-amber-200 via-rose-200 to-purple-200 dark:from-slate-800 dark:to-slate-700 transition-colors">
-                  <span
-                    className={`absolute top-0.5 left-1 h-5 w-5 rounded-full bg-white dark:bg-slate-900 shadow-sm transition-transform duration-300 ${
-                      mounted && isDark ? "translate-x-6" : ""
-                    }`}
-                  />
-                </div>
-              </button>
-              <Button variant="ghost" size="icon" className="text-slate-900 dark:text-slate-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-menu"
-                >
-                  <line x1="4" x2="20" y1="12" y2="12" />
-                  <line x1="4" x2="20" y1="6" y2="6" />
-                  <line x1="4" x2="20" y1="18" y2="18" />
-                </svg>
-              </Button>
-            </div>
+                <line x1="4" x2="20" y1="12" y2="12" />
+                <line x1="4" x2="20" y1="6" y2="6" />
+                <line x1="4" x2="20" y1="18" y2="18" />
+              </svg>
+            </Button>
           </div>
         </div>
       </header>
+
+      {/* Theme Switcher */}
+      <div className="container px-4 pt-20 md:pt-24 flex justify-end">
+        <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/70 px-3 py-1 shadow-sm hover:border-amber-300/80 dark:hover:border-amber-500/60 transition">
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-300">Light</span>
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="relative h-6 w-14 rounded-full bg-gradient-to-r from-amber-200 via-rose-200 to-purple-200 dark:from-slate-800 dark:to-slate-700 transition-colors"
+          >
+            <span
+              className={`absolute top-0.5 left-1 h-5 w-5 rounded-full bg-white dark:bg-slate-900 shadow-sm transition-transform duration-300 ${
+                mounted && isDark ? "translate-x-7" : ""
+              }`}
+            />
+            <SunMedium className="absolute left-1 top-1.5 h-3 w-3 text-amber-500" />
+            <Moon className="absolute right-1 top-1.5 h-3 w-3 text-slate-600 dark:text-slate-200" />
+          </button>
+          <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Dark</span>
+        </div>
+      </div>
 
       {/* Hero Section */}
       <section id="home" className="min-h-screen flex items-center relative pt-20 pb-12 overflow-hidden">
@@ -292,9 +277,6 @@ export default function Portfolio() {
                   height={320}
                   className="rounded-3xl object-cover border-4 border-white/80 dark:border-slate-800 p-1 relative z-10 shadow-xl"
                 />
-                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-white/80 dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800/60 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 shadow-lg">
-                  Building thoughtful systems
-                </div>
               </div>
             </motion.div>
           </div>
