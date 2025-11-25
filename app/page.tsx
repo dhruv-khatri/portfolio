@@ -78,13 +78,6 @@ export default function Portfolio() {
     setMounted(true)
   }, [])
 
-  // Always start visits in light mode by clearing saved preference
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.localStorage.removeItem("portfolio-theme-v2")
-    }
-  }, [])
-
   const activeTheme = (resolvedTheme ?? theme ?? "light") as string
   const isDark = activeTheme === "dark"
   const toggleTheme = () => setTheme(isDark ? "light" : "dark")
@@ -122,9 +115,7 @@ export default function Portfolio() {
 
   return (
     <div
-      className={`min-h-screen relative overflow-hidden transition-colors duration-500 ${
-        isDark ? "bg-slate-950 text-slate-50" : "bg-[#f6f1e6] text-slate-900"
-      }`}
+      className="min-h-screen relative overflow-hidden transition-colors duration-500 bg-[#f6f1e6] text-slate-900 dark:bg-slate-950 dark:text-slate-50"
       ref={containerRef}
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
