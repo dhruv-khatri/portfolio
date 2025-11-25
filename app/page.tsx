@@ -180,7 +180,7 @@ export default function Portfolio() {
       </header>
 
       {/* Theme Switcher */}
-      <div className="container px-4 pt-20 md:pt-24 flex justify-end">
+      <div className="container px-4 pt-12 md:pt-14 flex justify-end">
         <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/70 px-3 py-1 shadow-sm hover:border-amber-300/80 dark:hover:border-amber-500/60 transition">
           <span className="text-xs font-semibold text-slate-500 dark:text-slate-300">Light</span>
           <button
@@ -201,8 +201,8 @@ export default function Portfolio() {
       </div>
 
       {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center relative pt-20 pb-12 overflow-hidden">
-        <div className="container relative z-10 px-4 py-16 md:py-24 flex items-center justify-center">
+      <section id="home" className="min-h-screen flex items-center relative pt-8 pb-10 overflow-hidden">
+        <div className="container relative z-10 px-4 py-14 md:py-18 flex items-center justify-center">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center max-w-6xl w-full">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -284,7 +284,7 @@ export default function Portfolio() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 relative">
+      <section id="about" className="py-16 relative">
         <div className="container px-4">
           <motion.div
             initial={{ opacity: 0 }}
@@ -338,7 +338,7 @@ export default function Portfolio() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-24">
+      <section id="experience" className="py-16">
         <div className="container px-4">
           <motion.div
             initial={{ opacity: 0 }}
@@ -454,7 +454,7 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-24">
+      <section id="projects" className="py-16">
         <div className="container px-4">
           <motion.div
             initial={{ opacity: 0 }}
@@ -533,7 +533,7 @@ export default function Portfolio() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24">
+      <section id="contact" className="py-16">
         <div className="container px-4">
           <motion.div
             initial={{ opacity: 0 }}
