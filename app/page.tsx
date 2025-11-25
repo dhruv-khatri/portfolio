@@ -78,14 +78,6 @@ export default function Portfolio() {
     setMounted(true)
   }, [])
 
-  // Always start in light mode on fresh loads
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.localStorage?.removeItem("theme")
-    }
-    setTheme("light")
-  }, [setTheme])
-
   const activeTheme = (resolvedTheme ?? theme ?? "light") as string
   const isDark = activeTheme === "dark"
   const toggleTheme = () => setTheme(isDark ? "light" : "dark")
