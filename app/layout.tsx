@@ -1,5 +1,6 @@
 import "@/app/globals.css"
 import { Space_Grotesk } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap" })
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
         >
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
