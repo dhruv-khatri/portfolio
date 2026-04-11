@@ -370,6 +370,12 @@ export default function Portfolio() {
             </TabsList>
             <TabsContent value="experience" className="space-y-8">
               <TimelineItem
+                year="Aug 2025 - Present"
+                title="Scientist"
+                company="Eli Lilly and Company · Full-time"
+                description={`· San Diego, California, United States · On-site\n· Data Science and Computational Biology.`}
+              />
+              <TimelineItem
                 year="May 2024 - Present"
                 title="Undergraduate Research Assistant - Bafna Lab"
                 company="UCSD Computer Science and Engineering"
