@@ -373,7 +373,7 @@ export default function Portfolio() {
                 year="Aug 2025 - Present"
                 title="Scientist"
                 company="Eli Lilly and Company · Full-time"
-                description={`· San Diego, California, United States · On-site\n· Data Science and Computational Biology.`}
+                description={`· Data Science and Computational Biology.`}
               />
               <TimelineItem
                 year="May 2024 - Present"
