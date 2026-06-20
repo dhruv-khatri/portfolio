@@ -579,33 +579,35 @@ export default function Portfolio() {
       <section id="contact" className="relative z-10 border-t border-white/[0.06] px-5 py-28 md:px-8 md:py-36">
         <div className="mx-auto max-w-7xl">
           <SectionLabel index="04">Contact</SectionLabel>
-          <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div className="grid gap-12 lg:grid-cols-[1fr_440px] lg:items-end">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-steel-300">Start a conversation</p>
               <h2 className="mt-5 max-w-3xl text-4xl font-medium tracking-[-0.04em] text-slate-100 sm:text-6xl">
                 Interested in computational research, AI, or building something useful?
               </h2>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               {[
-                { label: "Email", value: "Send a message", href: "mailto:dkhatri383@gmail.com" },
-                { label: "LinkedIn", value: "dhruvkhatri", href: "https://www.linkedin.com/in/dhruvkhatri" },
                 { label: "GitHub", value: "dhruv-khatri", href: "https://github.com/dhruv-khatri" },
+                { label: "LinkedIn", value: "dhruvkhatri", href: "https://www.linkedin.com/in/dhruvkhatri" },
+                { label: "Email", value: "Send a message", href: "mailto:dkhatri383@gmail.com" },
               ].map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   target={link.href.startsWith("http") ? "_blank" : undefined}
                   rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                  className="group flex min-w-48 items-center justify-between gap-8 border-b border-slate-600 pb-3 text-lg text-slate-300 transition hover:border-steel-300 hover:text-white"
+                  className="group relative min-h-28 rounded-xl border border-white/10 bg-ink-950/70 p-5 transition duration-300 hover:-translate-y-0.5 hover:border-steel-400/50 hover:bg-ink-900"
                 >
-                  <span>
-                    <span className="block text-xs uppercase tracking-[0.14em] text-slate-500">{link.label}</span>
-                    <span className="mt-1 block">{link.value}</span>
+                  <span className="block">
+                    <span className="block text-base font-medium text-slate-200 transition group-hover:text-white">
+                      {link.label}
+                    </span>
+                    <span className="mt-2 block text-sm text-slate-400">{link.value}</span>
                   </span>
                   <ArrowUpRight
-                    size={20}
-                    className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    size={16}
+                    className="absolute right-4 top-4 text-slate-600 opacity-0 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-steel-200 group-hover:opacity-100"
                   />
                 </a>
               ))}
