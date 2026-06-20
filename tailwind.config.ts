@@ -20,6 +20,15 @@ const config = {
     },
     extend: {
       colors: {
+        ink: {
+          950: "#0a0c0f",
+          900: "#0e1115",
+        },
+        steel: {
+          200: "#a7c0cb",
+          300: "#7f9fab",
+          400: "#5f7f8c",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -1,768 +1,577 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { useTheme } from "next-themes"
-import { motion } from "framer-motion"
-import { Code, Database, Dna, ExternalLink, Github, Mail, MapPin, Moon, SunMedium } from "lucide-react"
-import Link from "next/link"
+import { useEffect, useRef, useState, type ReactNode } from "react"
+import { motion, useReducedMotion } from "framer-motion"
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  BrainCircuit,
+  Code2,
+  Database,
+  Dna,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  Menu,
+  X,
+} from "lucide-react"
 import Image from "next/image"
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+const navigation = ["about", "experience", "projects", "contact"]
 
-// Typewriter Effect Component
-function TypewriterEffect() {
-  const phrases = [
-    "Curious Problem Solver",
-    "ML engineer, Researcher, and Data Scientist",
-    "Translating Data into Meaningful Insights",
-    "Creating Fast, Scalable Software Systems",
-    "Basketball, Cars, Code, and Coffee",
-  ]
+const experience = [
+  {
+    period: "2025 — Present",
+    role: "Scientist",
+    company: "Eli Lilly and Company",
+    description: "Data science and computational biology.",
+  },
+  {
+    period: "2024 — Present",
+    role: "Undergraduate Research Assistant",
+    company: "Bafna Lab · UC San Diego",
+    description:
+      "Studying ecDNA and gene knockout results across cancer cell lines. Building co-amplification networks and statistical analysis tools.",
+  },
+  {
+    period: "Summer 2024",
+    role: "Research & Development Intern",
+    company: "Eli Lilly and Company",
+    description:
+      "Applied AI and computational methods to protein design and engineering for early large-molecule discovery.",
+  },
+  {
+    period: "2023 — 2024",
+    role: "Undergraduate Research Assistant",
+    company: "Rana Lab · UC San Diego School of Medicine",
+    description:
+      "Developed single-cell RNA-seq pipelines, analyzed TCGA and GTEx datasets, and optimized bioinformatics workflows for HPC environments.",
+  },
+]
 
-  const [currentPhrase, setCurrentPhrase] = useState(0)
-  const [currentText, setCurrentText] = useState("")
-  const [isDeleting, setIsDeleting] = useState(false)
+const projects = [
+  {
+    index: "01",
+    title: "Health xAI",
+    type: "AI SYSTEM",
+    description:
+      "A wellness intelligence system that turns Apple Health signals into personalized daily guidance using a generative AI pipeline.",
+    image: "/HealthxAI_logo.png",
+    details: [
+      ["Input", "Apple Health biometrics"],
+      ["System", "Contextual insight pipeline"],
+      ["Stack", "Swift · Flask · Python · Claude"],
+    ],
+  },
+  {
+    index: "02",
+    title: "Melanoma Detection",
+    type: "COMPUTER VISION",
+    description:
+      "A deep-learning image classifier designed to identify visual patterns associated with malignant skin lesions.",
+    image: "/Melanoma_detection_logo.png",
+    details: [
+      ["Input", "Dermoscopic imagery"],
+      ["Model", "Convolutional neural network"],
+      ["Stack", "TensorFlow · Python"],
+    ],
+  },
+  {
+    index: "03",
+    title: "Connect Four Prediction",
+    type: "PREDICTIVE MODELING",
+    description:
+      "A spatial machine-learning model that predicts game outcomes from incomplete early-game board states.",
+    image: "/Connect4_logo.png",
+    details: [
+      ["Input", "Eight-turn board state"],
+      ["Task", "Outcome classification"],
+      ["Stack", "Python · Jupyter · ML"],
+    ],
+    github: "https://github.com/dhruv-khatri/Connect-4-Prediction",
+  },
+  {
+    index: "04",
+    title: "Breast Cancer Detection",
+    type: "CLASSIFICATION",
+    description:
+      "A diagnostic classification model that distinguishes malignant and benign tumors from cell-nuclei features.",
+    image: "/Breast_cancer_detection_logo.png",
+    details: [
+      ["Input", "Tumor cell features"],
+      ["Task", "Binary classification"],
+      ["Stack", "Scikit-learn · Python"],
+    ],
+    github: "https://github.com/dhruv-khatri/Breast-Cancer-Detection",
+  },
+]
+
+function NeuralBackground({ activeSection }: { activeSection: string }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
-    const timeout = setTimeout(
-      () => {
-        // Current phrase
-        const phrase = phrases[currentPhrase]
+    const canvas = canvasRef.current
+    if (!canvas) return
 
-        // If deleting, remove the last character
-        // If typing, add the next character
-        if (isDeleting) {
-          setCurrentText(phrase.substring(0, currentText.length - 1))
-        } else {
-          setCurrentText(phrase.substring(0, currentText.length + 1))
+    const context = canvas.getContext("2d")
+    if (!context) return
+
+    let frame = 0
+    let animationFrame = 0
+    let pointer = { x: -1000, y: -1000 }
+    let nodes: Array<{ x: number; y: number; vx: number; vy: number; radius: number; phase: number }> = []
+
+    const sectionBias: Record<string, number> = {
+      home: 0.45,
+      about: 0.6,
+      experience: 0.85,
+      projects: 1,
+      contact: 0.35,
+    }
+
+    const resize = () => {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = window.innerWidth * ratio
+      canvas.height = window.innerHeight * ratio
+      canvas.style.width = `${window.innerWidth}px`
+      canvas.style.height = `${window.innerHeight}px`
+      context.setTransform(ratio, 0, 0, ratio, 0, 0)
+
+      const nodeCount = Math.min(48, Math.max(22, Math.floor(window.innerWidth / 32)))
+      nodes = Array.from({ length: nodeCount }, (_, index) => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
+        radius: index % 7 === 0 ? 2 : 1,
+        phase: Math.random() * Math.PI * 2,
+      }))
+    }
+
+    const handlePointer = (event: PointerEvent) => {
+      pointer = { x: event.clientX, y: event.clientY }
+    }
+
+    const draw = () => {
+      const width = window.innerWidth
+      const height = window.innerHeight
+      const activity = sectionBias[activeSection] ?? 0.5
+      context.clearRect(0, 0, width, height)
+
+      nodes.forEach((node) => {
+        if (!reduceMotion) {
+          const distanceX = pointer.x - node.x
+          const distanceY = pointer.y - node.y
+          const distance = Math.hypot(distanceX, distanceY)
+          if (distance < 180 && distance > 0) {
+            node.vx -= (distanceX / distance) * 0.002
+            node.vy -= (distanceY / distance) * 0.002
+          }
+
+          node.x += node.vx
+          node.y += node.vy
+          node.vx *= 0.995
+          node.vy *= 0.995
+
+          if (node.x < -20) node.x = width + 20
+          if (node.x > width + 20) node.x = -20
+          if (node.y < -20) node.y = height + 20
+          if (node.y > height + 20) node.y = -20
         }
 
-        // If we've completed typing the phrase
-        if (!isDeleting && currentText === phrase) {
-          // Wait a bit before starting to delete
-          setTimeout(() => setIsDeleting(true), 1500)
-        }
-        // If we've deleted the phrase
-        else if (isDeleting && currentText === "") {
-          setIsDeleting(false)
-          // Move to the next phrase
-          setCurrentPhrase((currentPhrase + 1) % phrases.length)
-        }
-      },
-      isDeleting ? 50 : 100,
-    )
+        context.beginPath()
+        context.arc(node.x, node.y, node.radius, 0, Math.PI * 2)
+        context.fillStyle = `rgba(116, 151, 168, ${0.14 + activity * 0.09})`
+        context.fill()
+      })
 
-    return () => clearTimeout(timeout)
-  }, [currentText, isDeleting, currentPhrase, phrases])
+      nodes.forEach((node, nodeIndex) => {
+        nodes.slice(nodeIndex + 1).forEach((otherNode) => {
+          const distance = Math.hypot(node.x - otherNode.x, node.y - otherNode.y)
+          const threshold = 135 + activity * 35
+          if (distance < threshold) {
+            context.beginPath()
+            context.moveTo(node.x, node.y)
+            context.lineTo(otherNode.x, otherNode.y)
+            context.strokeStyle = `rgba(92, 119, 133, ${(1 - distance / threshold) * 0.11})`
+            context.lineWidth = 0.6
+            context.stroke()
+          }
+        })
+      })
 
+      if (!reduceMotion && nodes.length > 1) {
+        const signalNode = nodes[Math.floor(frame / 140) % nodes.length]
+        const nextNode = nodes[(Math.floor(frame / 140) + 1) % nodes.length]
+        const progress = (frame % 140) / 140
+        const signalX = signalNode.x + (nextNode.x - signalNode.x) * progress
+        const signalY = signalNode.y + (nextNode.y - signalNode.y) * progress
+        context.beginPath()
+        context.arc(signalX, signalY, 1.6, 0, Math.PI * 2)
+        context.fillStyle = "rgba(157, 190, 204, 0.55)"
+        context.fill()
+      }
+
+      frame += 1
+      animationFrame = window.requestAnimationFrame(draw)
+    }
+
+    resize()
+    window.addEventListener("resize", resize)
+    window.addEventListener("pointermove", handlePointer)
+    draw()
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame)
+      window.removeEventListener("resize", resize)
+      window.removeEventListener("pointermove", handlePointer)
+    }
+  }, [activeSection, reduceMotion])
+
+  return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-0 opacity-80" aria-hidden="true" />
+}
+
+function SectionLabel({ index, children }: { index: string; children: ReactNode }) {
   return (
-    <div className="h-8 flex items-start justify-start">
-      <span className="text-xl md:text-2xl text-slate-600 dark:text-slate-300">
-        {currentText}
-        <span className="animate-pulse">|</span>
-      </span>
+    <div className="mb-10 flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-slate-500">
+      <span className="text-steel-300">{index}</span>
+      <span className="h-px w-10 bg-slate-700" />
+      <span>{children}</span>
     </div>
   )
 }
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("home")
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { theme, resolvedTheme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id)
+        })
+      },
+      { rootMargin: "-30% 0px -60% 0px" },
+    )
+
+    document.querySelectorAll("section[id]").forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
   }, [])
 
-  const activeTheme = (resolvedTheme ?? theme ?? "light") as string
-  const isDark = activeTheme === "dark"
-  const toggleTheme = () => setTheme(isDark ? "light" : "dark")
-
-  // Detect active section based on scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll("section")
-      const scrollPosition = window.scrollY + 200
-
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop
-        const sectionHeight = section.offsetHeight
-
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          setActiveSection(section.id)
-        }
-      })
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  // Scroll to section
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId)
-    if (section) {
-      window.scrollTo({
-        top: section.offsetTop - 80,
-        behavior: "smooth",
-      })
-    }
+  const scrollToSection = (section: string) => {
+    document.getElementById(section)?.scrollIntoView({ behavior: "smooth" })
+    setMenuOpen(false)
   }
 
   return (
-    <div
-      className="min-h-screen relative overflow-hidden transition-colors duration-500 bg-[#f6f1e6] text-slate-900 dark:bg-slate-950 dark:text-slate-50"
-      ref={containerRef}
-    >
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-10 top-[-10%] h-72 w-72 rounded-full bg-gradient-to-br from-amber-200/30 via-rose-200/25 to-purple-300/20 blur-3xl" />
-        <div className="absolute right-[-10%] top-[15%] h-80 w-80 rounded-full bg-gradient-to-br from-amber-300/30 via-rose-300/25 to-purple-400/20 blur-3xl" />
-        <div className="absolute bottom-[-20%] left-[20%] h-96 w-96 rounded-full bg-gradient-to-br from-amber-400/20 via-rose-300/15 to-purple-400/10 blur-3xl" />
-      </div>
-      {/* Navigation */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/60 dark:bg-slate-950/70 backdrop-blur-xl">
-        <div className="container flex items-center justify-between h-16 px-4">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-lg tracking-tight text-slate-900 dark:text-white">Dhruv Khatri</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6">
-            {["home", "about", "experience", "projects", "contact"].map((section) => (
+    <main className="min-h-screen overflow-hidden bg-ink-950 text-slate-200 selection:bg-steel-400/30">
+      <NeuralBackground activeSection={activeSection} />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_50%_0%,rgba(35,49,58,0.22),transparent_42%)]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.012)_1px,transparent_1px)] bg-[size:72px_72px]" />
+
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-ink-950/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
+          <button onClick={() => scrollToSection("home")} className="flex items-center gap-3 text-left">
+            <span className="flex h-7 w-7 items-center justify-center border border-steel-400/40 font-mono text-[10px] text-steel-200">
+              DK
+            </span>
+            <span className="hidden text-sm font-medium tracking-wide text-slate-300 sm:block">Dhruv Khatri</span>
+          </button>
+
+          <nav className="hidden items-center gap-7 md:flex">
+            {navigation.map((item, index) => (
               <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className={`relative text-sm font-medium transition-colors ${
-                  activeSection === section
-                    ? "text-slate-900 dark:text-white"
-                    : "text-slate-500 dark:text-slate-400"
+                key={item}
+                onClick={() => scrollToSection(item)}
+                className={`font-mono text-[11px] uppercase tracking-[0.16em] transition-colors ${
+                  activeSection === item ? "text-steel-200" : "text-slate-500 hover:text-slate-300"
                 }`}
               >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-                {activeSection === section && (
-                  <span className="absolute -bottom-2 left-0 right-0 mx-auto h-0.5 w-6 rounded-full bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500" />
-                )}
+                0{index + 1} {item}
               </button>
             ))}
           </nav>
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden md:inline-flex border-transparent bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 text-slate-900 font-semibold shadow-lg shadow-orange-200/60 hover:from-amber-200 hover:to-rose-400"
-            >
-              Resume
-            </Button>
-            <Button variant="ghost" size="icon" className="text-slate-900 dark:text-slate-100 md:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-menu"
-              >
-                <line x1="4" x2="20" y1="12" y2="12" />
-                <line x1="4" x2="20" y1="6" y2="6" />
-                <line x1="4" x2="20" y1="18" y2="18" />
-              </svg>
-            </Button>
-          </div>
+
+          <a
+            href="mailto:dkhatri383@gmail.com"
+            className="hidden items-center gap-2 border border-white/10 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400 transition hover:border-steel-400/40 hover:text-steel-200 md:flex"
+          >
+            Available to connect <span className="h-1.5 w-1.5 rounded-full bg-steel-300" />
+          </a>
+
+          <button
+            className="text-slate-400 md:hidden"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label="Toggle navigation"
+          >
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
+        {menuOpen && (
+          <nav className="border-t border-white/[0.06] bg-ink-950 px-5 py-5 md:hidden">
+            {navigation.map((item, index) => (
+              <button
+                key={item}
+                onClick={() => scrollToSection(item)}
+                className="flex w-full items-center gap-4 border-b border-white/[0.05] py-4 text-left font-mono text-xs uppercase tracking-[0.16em] text-slate-400"
+              >
+                <span className="text-steel-300">0{index + 1}</span> {item}
+              </button>
+            ))}
+          </nav>
+        )}
       </header>
 
-      {/* Theme Switcher */}
-      <div className="container px-4 pt-12 md:pt-14 flex justify-end translate-y-4 md:translate-y-6 relative z-40 pointer-events-auto">
-        <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/70 px-3 py-1 shadow-sm hover:border-amber-300/80 dark:hover:border-amber-500/60 transition">
-          <span className="text-xs font-semibold text-slate-500 dark:text-slate-300">Light</span>
-          <button
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="relative h-6 w-14 rounded-full bg-gradient-to-r from-amber-200 via-rose-200 to-purple-200 dark:from-slate-800 dark:to-slate-700 transition-colors"
+      <section id="home" className="relative z-10 flex min-h-screen items-center px-5 pb-16 pt-28 md:px-8">
+        <div className="mx-auto grid w-full max-w-7xl gap-14 lg:grid-cols-[1fr_340px] lg:items-end">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="max-w-4xl"
           >
-            <span
-              className={`absolute top-0.5 left-1 h-5 w-5 rounded-full bg-white dark:bg-slate-900 shadow-sm transition-transform duration-300 ${
-                mounted && isDark ? "translate-x-7" : ""
-              }`}
-            />
-            <SunMedium className="absolute left-1 top-1.5 h-3 w-3 text-amber-500" />
-            <Moon className="absolute right-1 top-1.5 h-3 w-3 text-slate-600 dark:text-slate-200" />
-          </button>
-          <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Dark</span>
+            <div className="mb-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.24em] text-steel-300">
+              <BrainCircuit size={15} />
+              Computational Biology · AI Systems
+            </div>
+            <h1 className="max-w-4xl text-5xl font-medium leading-[0.98] tracking-[-0.05em] text-slate-100 sm:text-7xl lg:text-[92px]">
+              Building computational systems for biological discovery.
+            </h1>
+            <p className="mt-8 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
+              I design machine-learning models, data pipelines, and research software that turn complex biological
+              data into useful decisions.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <button
+                onClick={() => scrollToSection("projects")}
+                className="group flex items-center gap-3 bg-slate-200 px-5 py-3 text-sm font-medium text-ink-950 transition hover:bg-white"
+              >
+                Explore selected work
+                <ArrowDownRight size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
+              </button>
+              <button
+                onClick={() => scrollToSection("experience")}
+                className="flex items-center gap-3 border border-white/10 px-5 py-3 text-sm text-slate-400 transition hover:border-steel-400/40 hover:text-slate-200"
+              >
+                View experience
+              </button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.7 }}
+            className="border-l border-white/[0.08] pl-6"
+          >
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600">Current focus</p>
+            {["Applied machine learning", "Computational biology", "Scalable research systems"].map((item) => (
+              <div key={item} className="flex items-center gap-3 border-b border-white/[0.06] py-4 text-sm text-slate-400">
+                <span className="h-1 w-1 rounded-full bg-steel-300" />
+                {item}
+              </div>
+            ))}
+            <div className="mt-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-slate-600">
+              <MapPin size={12} /> San Diego, California
+            </div>
+          </motion.div>
         </div>
-      </div>
+      </section>
 
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center relative pt-6 pb-10 overflow-hidden">
-        <div className="container relative z-10 px-4 py-12 md:py-16 flex items-center justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center max-w-6xl w-full">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col gap-6"
-            >
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-600 dark:text-slate-300 w-fit shadow-md shadow-orange-200/50">
-                <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-                Computational Biology + ML
-              </div>
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
-                Dhruv Khatri
-              </h1>
-
-              <TypewriterEffect />
-
-              <p className="text-lg text-slate-600 dark:text-slate-300 max-w-xl">
-                I specialize in computational biology, machine learning, and software development to solve complex
-                biological problems and advance scientific research.
+      <section id="about" className="relative z-10 border-t border-white/[0.06] px-5 py-28 md:px-8 md:py-36">
+        <div className="mx-auto max-w-7xl">
+          <SectionLabel index="01">Profile</SectionLabel>
+          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+            <h2 className="max-w-sm text-3xl font-medium tracking-[-0.03em] text-slate-100 md:text-4xl">
+              Computation as a tool for understanding complex systems.
+            </h2>
+            <div className="max-w-3xl">
+              <p className="text-xl leading-8 text-slate-300 md:text-2xl md:leading-10">
+                I work at the intersection of computer science, machine learning, and molecular biology—building
+                systems that make high-dimensional scientific data interpretable and actionable.
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <Button
-                  className="bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 text-slate-900 font-semibold shadow-lg shadow-orange-200/50 hover:from-amber-200 hover:to-rose-400"
-                  onClick={() => scrollToSection("projects")}
-                >
-                  View My Projects
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-slate-400/70 text-slate-900 dark:text-slate-100 dark:border-slate-700 bg-white/70 dark:bg-white/5 hover:bg-white/90 dark:hover:bg-slate-900/70"
-                  onClick={() => scrollToSection("contact")}
-                >
-                  Contact Me
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-4">
+              <p className="mt-7 max-w-2xl leading-7 text-slate-500">
+                My interests include AI-assisted discovery, genomic analysis, protein engineering, single-cell
+                methods, and the infrastructure required to move computational research from experiment to impact.
+              </p>
+              <div className="mt-12 grid gap-px bg-white/[0.06] sm:grid-cols-3">
                 {[
-                  { label: "Areas", value: "Bioinformatics · ML" },
-                  { label: "Focus", value: "Genomics · Proteins" },
-                  { label: "Location", value: "San Diego, CA" },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white/60 dark:bg-white/5 px-4 py-3 shadow-sm backdrop-blur"
-                  >
-                    <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-[0.08em]">
-                      {item.label}
-                    </p>
-                    <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{item.value}</p>
+                  ["Domain", "Biology + Healthcare"],
+                  ["Methods", "ML + Statistical Modeling"],
+                  ["Output", "Models + Data Systems"],
+                ].map(([label, value]) => (
+                  <div key={label} className="bg-ink-950 p-5">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-600">{label}</p>
+                    <p className="mt-3 text-sm text-slate-300">{value}</p>
                   </div>
                 ))}
               </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex justify-center md:justify-end"
-            >
-              <div className="relative w-64 h-64 md:w-80 md:h-80">
-                <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-amber-300/35 via-rose-300/30 to-purple-500/30 blur-3xl" />
-                <div className="absolute inset-4 rounded-3xl border border-white/50 dark:border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-2xl shadow-orange-200/30" />
-                <div className="absolute inset-0 rounded-3xl border-2 border-dashed border-white/60 dark:border-slate-700 animate-spin-slow" />
-                <Image
-                  src="/Computer_image.png?height=320&width=320"
-                  alt="Profile"
-                  width={320}
-                  height={320}
-                  className="rounded-3xl object-cover border-4 border-white/80 dark:border-slate-800 p-1 relative z-10 shadow-xl"
-                />
-              </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-16 relative">
-        <div className="container px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="max-w-4xl mx-auto rounded-3xl border border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-950/50 p-10 shadow-2xl shadow-orange-200/40 backdrop-blur-xl"
-          >
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-2">About Me</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 rounded-full mx-auto mb-6" />
-            </div>
-            <div className="space-y-4 text-slate-600 dark:text-slate-300">
-              <p>
-                I'm a computer and data scientist with a focus on applying computational techniques to solve
-                challenges in biomedical and biological research. With a foundation in computer science, data
-                engineering, and molecular biology, I specialize in designing scalable algorithms and analytical
-                tools to extract insights from high-dimensional biological datasets.
-              </p>
-              <p>
-                My work spans machine learning applications in healthcare, large-scale genomic data analysis, and the
-                development of AI-driven pipelines for predictive modeling. I'm especially interested in single-cell
-                omics, integrative multi-modal analysis, and leveraging deep learning to advance our understanding of
-                protein function, gene regulation, and disease mechanisms.
-              </p>
-              <p>
-                In my free time you can catch me playing basketball and golf, trying out new restaurants, or driving
-                around southern California. I love exploring new places and experiences which push me out of my comfort
-                zone.
-              </p>
-              <div className="flex items-center justify-center gap-2 text-slate-500 dark:text-slate-300 mt-6">
-                <MapPin className="h-4 w-4 text-amber-500" />
-                <span>San Diego, California</span>
-              </div>
-              <div className="flex flex-wrap justify-center gap-2 pt-4">
-                {["Python", "R", "Machine Learning", "Genomics", "Data Visualization", "Bioinformatics"].map(
-                  (skill) => (
-                    <Badge
-                      key={skill}
-                      variant="outline"
-                      className="border-transparent bg-amber-50 text-amber-900 dark:bg-amber-500/10 dark:text-amber-200"
-                    >
-                      {skill}
-                    </Badge>
-                  ),
-                )}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Experience Section */}
-      <section id="experience" className="py-16">
-        <div className="container px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl font-bold mb-2">Experience & Skills</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 rounded-full mx-auto mb-6" />
-            <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-              My professional journey combines academic research, industry experience, and continuous learning in the
-              rapidly evolving fields of bioinformatics and data science.
-            </p>
-          </motion.div>
-
-          <Tabs defaultValue="experience" className="max-w-4xl mx-auto">
-            <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/60 dark:bg-slate-950/60 border border-slate-200/60 dark:border-slate-800/60 backdrop-blur rounded-2xl p-1 shadow-sm">
-              <TabsTrigger
-                value="experience"
-                className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-300 data-[state=active]:via-rose-400 data-[state=active]:to-purple-500 data-[state=active]:text-slate-900 font-semibold rounded-xl"
-              >
-                Work Experience
-              </TabsTrigger>
-              <TabsTrigger
-                value="skills"
-                className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-300 data-[state=active]:via-rose-400 data-[state=active]:to-purple-500 data-[state=active]:text-slate-900 font-semibold rounded-xl"
-              >
-                Technical Skills
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="experience" className="space-y-8">
-              <TimelineItem
-                year="Aug 2025 - Present"
-                title="Scientist"
-                company="Eli Lilly and Company · Full-time"
-                description={`· Data Science and Computational Biology.`}
-              />
-              <TimelineItem
-                year="May 2024 - Present"
-                title="Undergraduate Research Assistant - Bafna Lab"
-                company="UCSD Computer Science and Engineering"
-                description={`· Exploring the role of ecDNA on gene knockout results in various cancer cell lines using AmpliconArchitect.\n· Developed gene networks using Cytoscape .js tools to visualize co-amplification events and utilized python libraries for data analysis and statistical testing.`}
-              />
-              <TimelineItem
-                year="June 2024 - September 2024"
-                title="Research and Development Intern"
-                company="Eli Lilly and Company"
-                description={`· Utilized AI and computational tools for protein design and engineering to enhance early large molecule discovery pipeline.\n· Communicated findings in a 30-minute oral presentation to technical stakeholders and executive leaders along with 23 page report in Nature research format.`}
-              />
-              <TimelineItem
-                year="April 2023 - December 2024"
-                title="Undergraduate Research Assistant - Rana Lab"
-                company="UCSD School of Medicine"
-                description={`· Developed a single-cell RNA-seq 10x pipeline using Linux and R to analyze sequenced mouse bone marrow cells for mRNA vaccine study, working with interdisciplinary team of biologists.\n· Data-mined TCGA and GTEx databases to provide insight into gene expression trends across 13 different cancers for ongoing projects.\n· Collaborated with a team of bioinformaticians to optimize pipeline shell scripts for use on remote supercomputer.\n· Developed in-depth tutorials on GitHub for future lab bioinformaticians to understand pipelines and workflow.`}
-              />
-              <TimelineItem
-                year="August 2023 - May 2024"
-                title="Research Study Assistant"
-                company="UCSD Health - Moores Cancer Center"
-                description={`· Assisted in administration of California Educator Tobacco Survey (CETS) with 2,000+ participating schools and 100,000+ participants in collaboration with California Department of Education.\n· Developed a database of school contact information, designed survey using Qualtrics, and distributed to participants using Qualtrics API.\n· Continued to follow up on survey results, regularly cleaning data and generating visualizations to present and publish findings.`}
-              />
-            </TabsContent>
-            <TabsContent value="skills">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <SkillCategory
-                  icon={<Dna className="h-6 w-6 text-amber-500" />}
-                  title="Bioinformatics"
-                  skills={[
-                    "Genomic Analysis",
-                    "Sequence Alignment",
-                    "Phylogenetics",
-                    "Structural Biology",
-                    "Next-Gen Sequencing",
-                  ]}
-                />
-                <SkillCategory
-                  icon={<Database className="h-6 w-6 text-amber-500" />}
-                  title="Data Science"
-                  skills={[
-                    "Machine Learning",
-                    "Statistical Analysis",
-                    "Data Visualization",
-                    "Big Data Processing",
-                    "Predictive Modeling",
-                  ]}
-                />
-                <SkillCategory
-                  icon={<Code className="h-6 w-6 text-amber-500" />}
-                  title="Programming"
-                  skills={["Python", "R", "SQL", "Bash", "C++", "JavaScript"]}
-                />
-                <SkillCategory
-                  icon={
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-flask-conical h-6 w-6 text-amber-500"
-                    >
-                      <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
-                      <path d="M8.5 2h7" />
-                      <path d="M7 16h10" />
-                    </svg>
-                  }
-                  title="Tools & Technologies"
-                  skills={["Docker", "Git", "AWS/Cloud Computing", "Jupyter", "Tensorflow/PyTorch", "Bioconductor"]}
-                />
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="py-16">
-        <div className="container px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl font-bold mb-2">Featured Projects</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 rounded-full mx-auto mb-6" />
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* <ProjectCard
-              title="GenomeViz"
-              description="An interactive visualization tool for exploring genomic data, supporting various data types and annotations."
-              image="/placeholder.svg?height=200&width=400"
-              tags={["Python", "D3.js", "Genomics"]}
-              github="https://github.com"
-              demo="https://example.com"
-            />
-            <ProjectCard
-              title="ML-DrugResponse"
-              description="Machine learning framework for predicting patient drug responses based on genomic biomarkers."
-              image="/placeholder.svg?height=200&width=400"
-              tags={["Machine Learning", "Python", "Healthcare"]}
-              github="https://github.com"
-              demo="https://example.com"
-            />
-            <ProjectCard
-              title="ProteinFold-AI"
-              description="Deep learning approach to protein structure prediction with improved accuracy over traditional methods."
-              image="/placeholder.svg?height=200&width=400"
-              tags={["Deep Learning", "PyTorch", "Structural Biology"]}
-              github="https://github.com"
-              demo="https://example.com"
-            /> */}
-            <ProjectCard
-              title="Health xAI"
-              description="Health xAI is a minimalist wellness app that integrates with Apple Health to provide personalized insights 
-              for sleep, activity, heart rate variability, and recovery. It uses an AI engine powered by Claude to generate daily 
-              health suggestions based on real-time biometric trends. With a clean interface and intuitive visuals, 
-              the app helps users optimize longevity and performance through subtle, intelligent nudges."
-              image="/HealthxAI_logo.png?height=200&width=400"
-              tags={["Swift", "Flask", "Python API", "Generative AI"]}
-              // github=
-              // demo=
-            />
-            <ProjectCard
-              title="Melanoma Detection"
-              description="Computer vision and deep learning to predict whether a skin discolorations are cancerous based on image data. 
-              Built with TensorFlow and Python, the model analyzes visual patterns to support early melanoma identification."
-              image="/Melanoma_detection_logo.png?height=200&width=400"
-              tags={["TensorFlow", "Python", "Computer Vision"]}
-              // github="https://github.com"
-              // demo="https://example.com"
-            />
-            <ProjectCard
-              title="Connect Four Outcome Prediction"
-              description="Machine learning model to predict connect four game winner based on early game board states (8 total turns elapsed)."
-              image="/Connect4_logo.png?height=200&width=400"
-              tags={["Machine Learning", "Spatial Analysis", "Python", "Jupyter"]}
-              github="https://github.com/dhruv-khatri/Connect-4-Prediction"
-              // demo="https://example.com"
-            />
-            <ProjectCard
-              title="Breast Cancer Detection"
-              description="Machine learning model to classify breast cancer tumors as malignant or benign based on tumor cell nuclei characteristics."
-              image="/Breast_cancer_detection_logo.png?height=200&width=400"
-              tags={["Sci-kit Learn", "Jupyter", "Python", "Linear Regression"]}
-              github="https://github.com/dhruv-khatri/Breast-Cancer-Detection"
-              // demo="https://example.com"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-16">
-        <div className="container px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <h2 className="text-3xl font-bold mb-2">Get In Touch</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 rounded-full mx-auto mb-6" />
-            <p className="text-slate-600 dark:text-slate-300 mb-8">
-              Interested in collaboration or have questions about my work? Feel free to reach out!
-            </p>
-
-            <Card className="bg-white/70 dark:bg-slate-950/60 border-slate-200/60 dark:border-slate-800/60 backdrop-blur-xl shadow-xl">
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex flex-col items-center p-6 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/60 dark:border-slate-800/60 shadow-sm">
-                    <Mail className="h-10 w-10 text-amber-500 mb-4" />
-                    <h3 className="text-lg font-medium mb-2">Email</h3>
-                    <a href="mailto:dkhatri383@gmail.com">
-                      <Button variant="link" className="text-slate-700 dark:text-slate-200 mt-2">
-                        Send an email
-                      </Button>
-                    </a>
+      <section id="experience" className="relative z-10 border-t border-white/[0.06] px-5 py-28 md:px-8 md:py-36">
+        <div className="mx-auto max-w-7xl">
+          <SectionLabel index="02">Experience + Capabilities</SectionLabel>
+          <div className="grid gap-16 lg:grid-cols-[1.3fr_0.7fr]">
+            <div>
+              {experience.map((item, index) => (
+                <motion.article
+                  key={`${item.company}-${item.period}`}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ delay: index * 0.05 }}
+                  className="group grid gap-4 border-t border-white/[0.08] py-7 sm:grid-cols-[140px_1fr]"
+                >
+                  <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-steel-300">{item.period}</p>
+                  <div>
+                    <h3 className="text-lg font-medium text-slate-200">{item.role}</h3>
+                    <p className="mt-1 text-sm text-slate-500">{item.company}</p>
+                    <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-500 transition-colors group-hover:text-slate-400">
+                      {item.description}
+                    </p>
                   </div>
-                  <div className="flex flex-col items-center p-6 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/60 dark:border-slate-800/60 shadow-sm">
-                    <Github className="h-10 w-10 text-amber-500 mb-4" />
-                    <h3 className="text-lg font-medium mb-2">GitHub</h3>
-                    <a href="https://github.com/dhruv-khatri" target="_blank" rel="noopener noreferrer">
-                      <Button variant="link" className="text-slate-700 dark:text-slate-200 mt-2">
-                        View profile
-                      </Button>
-                    </a>
+                </motion.article>
+              ))}
+            </div>
+
+            <div className="lg:pl-10">
+              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600">Technical domains</p>
+              <div className="space-y-px bg-white/[0.06]">
+                <Capability icon={<BrainCircuit size={18} />} title="Machine Learning" items="PyTorch · TensorFlow · Scikit-learn" />
+                <Capability icon={<Dna size={18} />} title="Computational Biology" items="Genomics · Single-cell · Protein design" />
+                <Capability icon={<Database size={18} />} title="Data Systems" items="Python · R · SQL · HPC · Cloud" />
+                <Capability icon={<Code2 size={18} />} title="Software Engineering" items="APIs · Pipelines · Visualization" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" className="relative z-10 border-t border-white/[0.06] px-5 py-28 md:px-8 md:py-36">
+        <div className="mx-auto max-w-7xl">
+          <SectionLabel index="03">Selected Systems</SectionLabel>
+          <div className="space-y-5">
+            {projects.map((project) => (
+              <motion.article
+                key={project.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                className="group grid overflow-hidden border border-white/[0.08] bg-ink-900/70 transition-colors hover:border-steel-400/30 md:grid-cols-[0.85fr_1.15fr]"
+              >
+                <div className="relative min-h-64 overflow-hidden border-b border-white/[0.08] bg-black/20 md:min-h-[390px] md:border-b-0 md:border-r">
+                  <Image
+                    src={project.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 768px) 100vw, 42vw"
+                    className="object-cover grayscale-[75%] brightness-[55%] contrast-125 transition duration-700 group-hover:scale-[1.025] group-hover:grayscale-[35%] group-hover:brightness-[65%]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/15 to-transparent" />
+                  <div className="absolute left-5 top-5 font-mono text-[10px] tracking-[0.2em] text-slate-400">
+                    {project.index} / {project.type}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                <div className="flex flex-col justify-between p-6 md:p-10">
+                  <div>
+                    <div className="flex items-start justify-between gap-5">
+                      <h3 className="text-3xl font-medium tracking-[-0.03em] text-slate-100 md:text-4xl">{project.title}</h3>
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`View ${project.title} on GitHub`}
+                          className="text-slate-600 transition hover:text-steel-200"
+                        >
+                          <ArrowUpRight size={22} />
+                        </a>
+                      )}
+                    </div>
+                    <p className="mt-6 max-w-xl text-base leading-7 text-slate-400">{project.description}</p>
+                  </div>
+                  <dl className="mt-12 border-t border-white/[0.08]">
+                    {project.details.map(([label, value]) => (
+                      <div key={label} className="grid grid-cols-[90px_1fr] border-b border-white/[0.06] py-3 text-sm">
+                        <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-600">{label}</dt>
+                        <dd className="text-slate-400">{value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 border-t border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-950/60 backdrop-blur">
-        <div className="container px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center gap-2 mb-4 md:mb-0">
-              <span className="font-bold">Dhruv Khatri</span>
+      <section id="contact" className="relative z-10 border-t border-white/[0.06] px-5 py-28 md:px-8 md:py-36">
+        <div className="mx-auto max-w-7xl">
+          <SectionLabel index="04">Contact</SectionLabel>
+          <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-steel-300">Start a conversation</p>
+              <h2 className="mt-5 max-w-3xl text-4xl font-medium tracking-[-0.04em] text-slate-100 sm:text-6xl">
+                Interested in computational research, AI, or building something useful?
+              </h2>
             </div>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">© {new Date().getFullYear()} All rights reserved.</p>
-            <div className="flex gap-4 mt-4 md:mt-0">
-              <a href="https://www.linkedin.com/in/dhruvkhatri" target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/80 dark:hover:bg-slate-800"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-linkedin"
-                  >
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                    <rect width="4" height="12" x="2" y="9" />
-                    <circle cx="4" cy="4" r="2" />
-                  </svg>
-                </Button>
-              </a>
-              <a href="https://github.com/dhruv-khatri" target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/80 dark:hover:bg-slate-800"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-github"
-                  >
-                    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                    <path d="M9 18c-4.51 2-5-2-7-2" />
-                  </svg>
-                </Button>
-              </a>
-            </div>
+            <a
+              href="mailto:dkhatri383@gmail.com"
+              className="group flex w-fit items-center gap-5 border-b border-slate-500 pb-3 text-lg text-slate-300 transition hover:border-steel-300 hover:text-white"
+            >
+              Send an email
+              <ArrowUpRight size={20} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer className="relative z-10 border-t border-white/[0.06] bg-ink-950 px-5 py-8 md:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Dhruv Khatri</p>
+          <div className="flex items-center gap-5">
+            <a href="mailto:dkhatri383@gmail.com" className="transition hover:text-steel-200" aria-label="Email">
+              <Mail size={16} />
+            </a>
+            <a
+              href="https://github.com/dhruv-khatri"
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-steel-200"
+              aria-label="GitHub"
+            >
+              <Github size={16} />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/dhruvkhatri"
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-steel-200"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={16} />
+            </a>
           </div>
         </div>
       </footer>
+    </main>
+  )
+}
+
+function Capability({ icon, title, items }: { icon: ReactNode; title: string; items: string }) {
+  return (
+    <div className="bg-ink-950 p-5">
+      <div className="flex items-center gap-3 text-steel-300">
+        {icon}
+        <h3 className="text-sm font-medium text-slate-300">{title}</h3>
+      </div>
+      <p className="mt-3 pl-[30px] text-xs leading-5 text-slate-600">{items}</p>
     </div>
-  )
-}
-
-// Timeline Item Component
-function TimelineItem({ year, title, company, description }) {
-  // Split description by newlines and render each line
-  const descriptionLines = description.split("\n").map((line, index) => (
-    <p key={index} className="mt-1 text-slate-600 dark:text-slate-300">
-      {line}
-    </p>
-  ))
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
-      className="flex gap-4"
-    >
-      <div className="flex flex-col items-center">
-        <div className="w-3 h-3 rounded-full bg-amber-400 shadow-lg shadow-orange-200/70" />
-        <div className="w-0.5 h-full bg-slate-200 dark:bg-slate-800" />
-      </div>
-      <div className="pb-8">
-        <span className="text-sm font-medium text-amber-500">{year}</span>
-        <h3 className="text-xl font-bold mt-1 text-slate-900 dark:text-white">{title}</h3>
-        <p className="text-slate-500 dark:text-slate-300">{company}</p>
-        <div className="mt-2 space-y-1">{descriptionLines}</div>
-      </div>
-    </motion.div>
-  )
-}
-
-// Skill Category Component
-function SkillCategory({ icon, title, skills }) {
-  return (
-    <Card className="bg-white/70 dark:bg-slate-950/60 border-slate-200/60 dark:border-slate-800/60 backdrop-blur-xl shadow-lg shadow-orange-200/40">
-      <CardHeader className="pb-2">
-        <div className="flex items-center gap-2">
-          {icon}
-          <CardTitle className="text-slate-900 dark:text-white">{title}</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <ul className="space-y-2">
-          {skills.map((skill, index) => (
-            <li key={index} className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-              <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-              <span>{skill}</span>
-            </li>
-          ))}
-        </ul>
-      </CardContent>
-    </Card>
-  )
-}
-
-// Project Card Component
-function ProjectCard({ title, description, image, tags, github, demo }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
-    >
-      <Card className="overflow-hidden bg-white/70 dark:bg-slate-950/60 border-slate-200/60 dark:border-slate-800/60 h-full flex flex-col backdrop-blur-xl shadow-xl shadow-orange-200/40">
-        <div className="relative h-48 overflow-hidden">
-          <Image
-            src={image || "/placeholder.svg"}
-            alt={title}
-            fill
-            className="object-cover transition-transform duration-300 hover:scale-105"
-          />
-        </div>
-        <CardHeader>
-          <CardTitle className="text-slate-900 dark:text-white">{title}</CardTitle>
-          <CardDescription className="text-slate-600 dark:text-slate-300">{description}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex-grow">
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag, index) => (
-              <Badge
-                key={index}
-                variant="secondary"
-                className="bg-amber-50 text-amber-900 dark:bg-amber-500/10 dark:text-amber-200 border-transparent"
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        </CardContent>
-        <CardFooter className="flex gap-2">
-          {github && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1 gap-1 border-transparent bg-gradient-to-r from-amber-300 via-rose-400 to-purple-500 text-slate-900 font-semibold shadow-md hover:from-amber-200 hover:to-rose-400"
-              asChild
-            >
-              <Link href={github}>
-                <Github className="h-4 w-4" />
-                Code
-              </Link>
-            </Button>
-          )}
-          {demo && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1 gap-1 border-slate-400/70 text-slate-900 dark:text-slate-100 dark:border-slate-700 bg-white/70 dark:bg-white/5 hover:bg-white/90 dark:hover:bg-slate-900/70"
-              asChild
-            >
-              <Link href={demo}>
-                <ExternalLink className="h-4 w-4" />
-                Demo
-              </Link>
-            </Button>
-          )}
-        </CardFooter>
-      </Card>
-    </motion.div>
   )
 }

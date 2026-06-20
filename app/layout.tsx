@@ -1,20 +1,17 @@
 import "@/app/globals.css"
-import { Space_Grotesk } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
-
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap" })
+import type { ReactNode } from "react"
 
 export const metadata = {
-  title: "Dhruv Khatri - Bioinformatician & Data Scientist",
-  description: "Portfolio website showcasing bioinformatics and data science projects",
-    generator: 'v0.dev'
+  title: "Dhruv Khatri — Computational Biology & AI",
+  description: "Computational biology, machine learning, and AI systems by Dhruv Khatri.",
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={spaceGrotesk.className}>
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
