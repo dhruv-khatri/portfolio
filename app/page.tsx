@@ -25,7 +25,8 @@ const experience = [
     period: "2025 — Present",
     role: "Scientist",
     company: "Eli Lilly and Company",
-    description: "Data science and computational biology.",
+    description:
+      "Working on Artificial Intelligence, Machine Learning, and Bioinformatics for Large Molecule Discovery.",
   },
   {
     period: "2024 — Present",
@@ -150,12 +151,12 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
       context.setTransform(ratio, 0, 0, ratio, 0, 0)
 
       const isMobile = window.innerWidth < 768
-      const columns = isMobile ? 5 : 7
-      const rows = isMobile ? 7 : 6
-      const graphWidth = isMobile ? window.innerWidth * 0.9 : Math.min(680, window.innerWidth * 0.5)
-      const graphHeight = isMobile ? window.innerHeight * 0.62 : Math.min(560, window.innerHeight * 0.72)
-      const startX = isMobile ? window.innerWidth * 0.05 : window.innerWidth - graphWidth - window.innerWidth * 0.035
-      const startY = isMobile ? window.innerHeight * 0.23 : window.innerHeight * 0.16
+      const columns = isMobile ? 6 : 10
+      const rows = isMobile ? 8 : 7
+      const graphWidth = window.innerWidth * 0.92
+      const graphHeight = window.innerHeight * 0.78
+      const startX = window.innerWidth * 0.02
+      const startY = window.innerHeight * 0.12
 
       nodes = Array.from({ length: columns * rows }, (_, index) => {
         const column = index % columns
@@ -323,7 +324,7 @@ export default function Portfolio() {
   return (
     <main className="min-h-screen overflow-hidden bg-ink-950 text-slate-200 selection:bg-steel-400/30">
       <NeuralBackground activeSection={activeSection} />
-      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_72%_35%,rgba(35,49,58,0.26),transparent_38%)]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_50%_35%,rgba(35,49,58,0.24),transparent_52%)]" />
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.012)_1px,transparent_1px)] bg-[size:72px_72px]" />
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-ink-950/80 backdrop-blur-xl">
@@ -353,7 +354,7 @@ export default function Portfolio() {
             href="mailto:dkhatri383@gmail.com"
             className="hidden items-center gap-2 border border-white/10 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400 transition hover:border-steel-400/40 hover:text-steel-200 md:flex"
           >
-            Available to connect <span className="h-1.5 w-1.5 rounded-full bg-steel-300" />
+            Connect <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
           </a>
 
           <button
