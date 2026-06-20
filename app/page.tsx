@@ -30,7 +30,7 @@ const experience = [
   },
   {
     period: "2024 — Present",
-    role: "Undergraduate Research Assistant",
+    role: "Research Assistant",
     company: "Bafna Lab · UC San Diego",
     description:
       "Studying ecDNA and gene knockout results across cancer cell lines. Building co-amplification networks and statistical analysis tools.",
@@ -44,7 +44,7 @@ const experience = [
   },
   {
     period: "2023 — 2024",
-    role: "Undergraduate Research Assistant",
+    role: "Research Assistant",
     company: "Rana Lab · UC San Diego School of Medicine",
     description:
       "Developed single-cell RNA-seq pipelines, analyzed TCGA and GTEx datasets, and optimized bioinformatics workflows for HPC environments.",
@@ -247,19 +247,26 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
         context.strokeStyle = "rgba(127, 159, 171, 0.22)"
         context.lineWidth = 1
         context.stroke()
-      }
 
-      if (!reduceMotion && nodes.length > 1) {
-        const signalIndex = Math.floor(frame / 90) % (nodes.length - 1)
-        const signalNode = nodes[signalIndex]
-        const nextNode = nodes[signalIndex + 1]
-        const progress = (frame % 90) / 90
-        const signalX = signalNode.x + (nextNode.x - signalNode.x) * progress
-        const signalY = signalNode.y + (nextNode.y - signalNode.y) * progress
-        context.beginPath()
-        context.arc(signalX, signalY, 2.4, 0, Math.PI * 2)
-        context.fillStyle = "rgba(190, 218, 228, 0.9)"
-        context.fill()
+        nodes
+          .map((node) => ({
+            node,
+            distance: Math.hypot(node.x - pointer.x, node.y - pointer.y),
+          }))
+          .filter(({ distance }) => distance > 34 && distance < 260)
+          .sort((first, second) => first.distance - second.distance)
+          .slice(0, 4)
+          .forEach(({ node, distance }) => {
+            const directionX = (node.x - pointer.x) / distance
+            const directionY = (node.y - pointer.y) / distance
+
+            context.beginPath()
+            context.moveTo(pointer.x + directionX * 34, pointer.y + directionY * 34)
+            context.lineTo(node.x, node.y)
+            context.strokeStyle = `rgba(127, 159, 171, ${(1 - distance / 260) * 0.16})`
+            context.lineWidth = 0.65
+            context.stroke()
+          })
       }
 
       frame += 1
@@ -290,7 +297,7 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
 
 function SectionLabel({ index, children }: { index: string; children: ReactNode }) {
   return (
-    <div className="mb-10 flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-slate-500">
+    <div className="mb-10 flex items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-slate-400">
       <span className="text-steel-300">{index}</span>
       <span className="h-px w-10 bg-slate-700" />
       <span>{children}</span>
@@ -342,7 +349,7 @@ export default function Portfolio() {
                 key={item}
                 onClick={() => scrollToSection(item)}
                 className={`font-mono text-[11px] uppercase tracking-[0.16em] transition-colors ${
-                  activeSection === item ? "text-steel-200" : "text-slate-500 hover:text-slate-300"
+                  activeSection === item ? "text-steel-200" : "text-slate-400 hover:text-slate-200"
                 }`}
               >
                 0{index + 1} {item}
@@ -425,14 +432,14 @@ export default function Portfolio() {
             transition={{ delay: 0.3, duration: 0.7 }}
             className="border-l border-white/[0.08] pl-6"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600">Current focus</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">Current focus</p>
             {["Applied machine learning", "Computational biology", "Scalable research systems"].map((item) => (
               <div key={item} className="flex items-center gap-3 border-b border-white/[0.06] py-4 text-sm text-slate-400">
                 <span className="h-1 w-1 rounded-full bg-steel-300" />
                 {item}
               </div>
             ))}
-            <div className="mt-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-slate-600">
+            <div className="mt-5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-slate-400">
               <MapPin size={12} /> San Diego, California
             </div>
           </motion.div>
@@ -451,7 +458,7 @@ export default function Portfolio() {
                 I work at the intersection of computer science, machine learning, and molecular biology—building
                 systems that make high-dimensional scientific data interpretable and actionable.
               </p>
-              <p className="mt-7 max-w-2xl leading-7 text-slate-500">
+              <p className="mt-7 max-w-2xl leading-7 text-slate-400">
                 My interests include AI-assisted discovery, genomic analysis, protein engineering, single-cell
                 methods, and the infrastructure required to move computational research from experiment to impact.
               </p>
@@ -462,7 +469,7 @@ export default function Portfolio() {
                   ["Output", "Models + Data Systems"],
                 ].map(([label, value]) => (
                   <div key={label} className="bg-ink-950 p-5">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-600">{label}</p>
+                    <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-slate-400">{label}</p>
                     <p className="mt-3 text-sm text-slate-300">{value}</p>
                   </div>
                 ))}
@@ -489,8 +496,8 @@ export default function Portfolio() {
                   <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-steel-300">{item.period}</p>
                   <div>
                     <h3 className="text-lg font-medium text-slate-200">{item.role}</h3>
-                    <p className="mt-1 text-sm text-slate-500">{item.company}</p>
-                    <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-500 transition-colors group-hover:text-slate-400">
+                    <p className="mt-1 text-sm text-slate-400">{item.company}</p>
+                    <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-400">
                       {item.description}
                     </p>
                   </div>
@@ -499,7 +506,7 @@ export default function Portfolio() {
             </div>
 
             <div className="lg:pl-10">
-              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600">Technical domains</p>
+              <p className="mb-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">Technical domains</p>
               <div className="space-y-px bg-white/[0.06]">
                 <Capability icon={<BrainCircuit size={18} />} title="Machine Learning" items="PyTorch · TensorFlow · Scikit-learn" />
                 <Capability icon={<Dna size={18} />} title="Computational Biology" items="Genomics · Single-cell · Protein design" />
@@ -546,7 +553,7 @@ export default function Portfolio() {
                           target="_blank"
                           rel="noreferrer"
                           aria-label={`View ${project.title} on GitHub`}
-                          className="text-slate-600 transition hover:text-steel-200"
+                          className="text-slate-400 transition hover:text-steel-200"
                         >
                           <ArrowUpRight size={22} />
                         </a>
@@ -557,7 +564,7 @@ export default function Portfolio() {
                   <dl className="mt-12 border-t border-white/[0.08]">
                     {project.details.map(([label, value]) => (
                       <div key={label} className="grid grid-cols-[90px_1fr] border-b border-white/[0.06] py-3 text-sm">
-                        <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-600">{label}</dt>
+                        <dt className="font-mono text-[11px] uppercase tracking-[0.12em] text-slate-400">{label}</dt>
                         <dd className="text-slate-400">{value}</dd>
                       </div>
                     ))}
@@ -591,7 +598,7 @@ export default function Portfolio() {
       </section>
 
       <footer className="relative z-10 border-t border-white/[0.06] bg-ink-950 px-5 py-8 md:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Dhruv Khatri</p>
           <div className="flex items-center gap-5">
             <a href="mailto:dkhatri383@gmail.com" className="transition hover:text-steel-200" aria-label="Email">
@@ -629,7 +636,7 @@ function Capability({ icon, title, items }: { icon: ReactNode; title: string; it
         {icon}
         <h3 className="text-sm font-medium text-slate-300">{title}</h3>
       </div>
-      <p className="mt-3 pl-[30px] text-xs leading-5 text-slate-600">{items}</p>
+      <p className="mt-3 pl-[30px] text-xs leading-5 text-slate-400">{items}</p>
     </div>
   )
 }

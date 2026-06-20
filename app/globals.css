@@ -38,6 +38,8 @@
   body {
     background: #0a0c0f;
     color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     font-family:
       "Avenir Next",
       Avenir,
