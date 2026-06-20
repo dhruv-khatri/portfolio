@@ -120,15 +120,25 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
 
     let frame = 0
     let animationFrame = 0
-    let pointer = { x: -1000, y: -1000 }
-    let nodes: Array<{ x: number; y: number; vx: number; vy: number; radius: number; phase: number }> = []
+    let pointer = { x: window.innerWidth * 0.72, y: window.innerHeight * 0.42, active: false }
+    let scrollProgress = 0
+    let nodes: Array<{
+      x: number
+      y: number
+      originX: number
+      originY: number
+      vx: number
+      vy: number
+      radius: number
+      layer: number
+    }> = []
 
     const sectionBias: Record<string, number> = {
-      home: 0.45,
-      about: 0.6,
-      experience: 0.85,
+      home: 0.8,
+      about: 0.9,
+      experience: 1,
       projects: 1,
-      contact: 0.35,
+      contact: 0.7,
     }
 
     const resize = () => {
@@ -139,19 +149,45 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
       canvas.style.height = `${window.innerHeight}px`
       context.setTransform(ratio, 0, 0, ratio, 0, 0)
 
-      const nodeCount = Math.min(48, Math.max(22, Math.floor(window.innerWidth / 32)))
-      nodes = Array.from({ length: nodeCount }, (_, index) => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.12,
-        vy: (Math.random() - 0.5) * 0.12,
-        radius: index % 7 === 0 ? 2 : 1,
-        phase: Math.random() * Math.PI * 2,
-      }))
+      const isMobile = window.innerWidth < 768
+      const columns = isMobile ? 5 : 7
+      const rows = isMobile ? 7 : 6
+      const graphWidth = isMobile ? window.innerWidth * 0.9 : Math.min(680, window.innerWidth * 0.5)
+      const graphHeight = isMobile ? window.innerHeight * 0.62 : Math.min(560, window.innerHeight * 0.72)
+      const startX = isMobile ? window.innerWidth * 0.05 : window.innerWidth - graphWidth - window.innerWidth * 0.035
+      const startY = isMobile ? window.innerHeight * 0.23 : window.innerHeight * 0.16
+
+      nodes = Array.from({ length: columns * rows }, (_, index) => {
+        const column = index % columns
+        const row = Math.floor(index / columns)
+        const offsetX = row % 2 === 0 ? 0 : graphWidth / columns / 2
+        const originX = startX + (column / (columns - 1)) * graphWidth + offsetX
+        const originY = startY + (row / (rows - 1)) * graphHeight
+
+        return {
+          x: originX,
+          y: originY,
+          originX,
+          originY,
+          vx: 0,
+          vy: 0,
+          radius: index % 9 === 0 ? 3.2 : index % 4 === 0 ? 2.2 : 1.5,
+          layer: column,
+        }
+      })
     }
 
     const handlePointer = (event: PointerEvent) => {
-      pointer = { x: event.clientX, y: event.clientY }
+      pointer = { x: event.clientX, y: event.clientY, active: true }
+    }
+
+    const handlePointerLeave = () => {
+      pointer.active = false
+    }
+
+    const handleScroll = () => {
+      const availableScroll = document.documentElement.scrollHeight - window.innerHeight
+      scrollProgress = availableScroll > 0 ? window.scrollY / availableScroll : 0
     }
 
     const draw = () => {
@@ -160,57 +196,68 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
       const activity = sectionBias[activeSection] ?? 0.5
       context.clearRect(0, 0, width, height)
 
-      nodes.forEach((node) => {
+      nodes.forEach((node, index) => {
         if (!reduceMotion) {
           const distanceX = pointer.x - node.x
           const distanceY = pointer.y - node.y
           const distance = Math.hypot(distanceX, distanceY)
-          if (distance < 180 && distance > 0) {
-            node.vx -= (distanceX / distance) * 0.002
-            node.vy -= (distanceY / distance) * 0.002
+          if (pointer.active && distance < 210 && distance > 0) {
+            const force = (1 - distance / 210) * 0.085
+            node.vx -= (distanceX / distance) * force
+            node.vy -= (distanceY / distance) * force
           }
 
+          const scrollWave = Math.sin(scrollProgress * Math.PI * 4 + node.layer * 0.7 + index * 0.08) * 12
+          const targetY = node.originY + scrollWave * activity
+          node.vx += (node.originX - node.x) * 0.008
+          node.vy += (targetY - node.y) * 0.008
           node.x += node.vx
           node.y += node.vy
-          node.vx *= 0.995
-          node.vy *= 0.995
-
-          if (node.x < -20) node.x = width + 20
-          if (node.x > width + 20) node.x = -20
-          if (node.y < -20) node.y = height + 20
-          if (node.y > height + 20) node.y = -20
+          node.vx *= 0.9
+          node.vy *= 0.9
         }
 
+        const pulse = reduceMotion ? 0 : Math.sin(frame * 0.018 + index * 0.7) * 0.08
         context.beginPath()
         context.arc(node.x, node.y, node.radius, 0, Math.PI * 2)
-        context.fillStyle = `rgba(116, 151, 168, ${0.14 + activity * 0.09})`
+        context.fillStyle = `rgba(145, 181, 195, ${0.3 + activity * 0.14 + pulse})`
         context.fill()
       })
 
       nodes.forEach((node, nodeIndex) => {
         nodes.slice(nodeIndex + 1).forEach((otherNode) => {
           const distance = Math.hypot(node.x - otherNode.x, node.y - otherNode.y)
-          const threshold = 135 + activity * 35
+          const layerDistance = Math.abs(node.layer - otherNode.layer)
+          const threshold = layerDistance <= 1 ? 155 : 112
           if (distance < threshold) {
             context.beginPath()
             context.moveTo(node.x, node.y)
             context.lineTo(otherNode.x, otherNode.y)
-            context.strokeStyle = `rgba(92, 119, 133, ${(1 - distance / threshold) * 0.11})`
-            context.lineWidth = 0.6
+            context.strokeStyle = `rgba(92, 126, 140, ${(1 - distance / threshold) * 0.28 * activity})`
+            context.lineWidth = 0.75
             context.stroke()
           }
         })
       })
 
+      if (pointer.active) {
+        context.beginPath()
+        context.arc(pointer.x, pointer.y, 34, 0, Math.PI * 2)
+        context.strokeStyle = "rgba(127, 159, 171, 0.22)"
+        context.lineWidth = 1
+        context.stroke()
+      }
+
       if (!reduceMotion && nodes.length > 1) {
-        const signalNode = nodes[Math.floor(frame / 140) % nodes.length]
-        const nextNode = nodes[(Math.floor(frame / 140) + 1) % nodes.length]
-        const progress = (frame % 140) / 140
+        const signalIndex = Math.floor(frame / 90) % (nodes.length - 1)
+        const signalNode = nodes[signalIndex]
+        const nextNode = nodes[signalIndex + 1]
+        const progress = (frame % 90) / 90
         const signalX = signalNode.x + (nextNode.x - signalNode.x) * progress
         const signalY = signalNode.y + (nextNode.y - signalNode.y) * progress
         context.beginPath()
-        context.arc(signalX, signalY, 1.6, 0, Math.PI * 2)
-        context.fillStyle = "rgba(157, 190, 204, 0.55)"
+        context.arc(signalX, signalY, 2.4, 0, Math.PI * 2)
+        context.fillStyle = "rgba(190, 218, 228, 0.9)"
         context.fill()
       }
 
@@ -219,18 +266,25 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
     }
 
     resize()
+    handleScroll()
     window.addEventListener("resize", resize)
     window.addEventListener("pointermove", handlePointer)
+    window.addEventListener("pointerdown", handlePointer)
+    document.documentElement.addEventListener("pointerleave", handlePointerLeave)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     draw()
 
     return () => {
       window.cancelAnimationFrame(animationFrame)
       window.removeEventListener("resize", resize)
       window.removeEventListener("pointermove", handlePointer)
+      window.removeEventListener("pointerdown", handlePointer)
+      document.documentElement.removeEventListener("pointerleave", handlePointerLeave)
+      window.removeEventListener("scroll", handleScroll)
     }
   }, [activeSection, reduceMotion])
 
-  return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-0 opacity-80" aria-hidden="true" />
+  return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-[2]" aria-hidden="true" />
 }
 
 function SectionLabel({ index, children }: { index: string; children: ReactNode }) {
@@ -269,7 +323,7 @@ export default function Portfolio() {
   return (
     <main className="min-h-screen overflow-hidden bg-ink-950 text-slate-200 selection:bg-steel-400/30">
       <NeuralBackground activeSection={activeSection} />
-      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_50%_0%,rgba(35,49,58,0.22),transparent_42%)]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_72%_35%,rgba(35,49,58,0.26),transparent_38%)]" />
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.012)_1px,transparent_1px)] bg-[size:72px_72px]" />
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-ink-950/80 backdrop-blur-xl">
@@ -333,11 +387,14 @@ export default function Portfolio() {
             transition={{ duration: 0.7 }}
             className="max-w-4xl"
           >
-            <div className="mb-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.24em] text-steel-300">
+            <div className="mb-7 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.24em] text-steel-300">
               <BrainCircuit size={15} />
               Computational Biology · AI Systems
             </div>
-            <h1 className="max-w-4xl text-5xl font-medium leading-[0.98] tracking-[-0.05em] text-slate-100 sm:text-7xl lg:text-[92px]">
+            <p className="mb-5 text-5xl font-semibold leading-none tracking-[-0.055em] text-white sm:text-7xl lg:text-[104px]">
+              Dhruv Khatri
+            </p>
+            <h1 className="max-w-3xl text-3xl font-medium leading-[1.05] tracking-[-0.04em] text-slate-300 sm:text-5xl lg:text-[58px]">
               Building computational systems for biological discovery.
             </h1>
             <p className="mt-8 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
@@ -346,17 +403,17 @@ export default function Portfolio() {
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <button
-                onClick={() => scrollToSection("projects")}
+                onClick={() => scrollToSection("experience")}
                 className="group flex items-center gap-3 bg-slate-200 px-5 py-3 text-sm font-medium text-ink-950 transition hover:bg-white"
               >
-                Explore selected work
+                View experience
                 <ArrowDownRight size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
               </button>
               <button
-                onClick={() => scrollToSection("experience")}
+                onClick={() => scrollToSection("projects")}
                 className="flex items-center gap-3 border border-white/10 px-5 py-3 text-sm text-slate-400 transition hover:border-steel-400/40 hover:text-slate-200"
               >
-                View experience
+                Explore selected work
               </button>
             </div>
           </motion.div>
