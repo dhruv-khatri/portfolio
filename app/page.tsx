@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { motion, useReducedMotion } from "framer-motion"
-import { useTheme } from "next-themes"
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -14,8 +13,6 @@ import {
   Linkedin,
   Mail,
   Menu,
-  Moon,
-  Sun,
   X,
 } from "lucide-react"
 import Image from "next/image"
@@ -110,7 +107,7 @@ const projects = [
   },
 ]
 
-function NeuralBackground({ activeSection, isLight }: { activeSection: string; isLight: boolean }) {
+function NeuralBackground({ activeSection }: { activeSection: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const reduceMotion = useReducedMotion()
 
@@ -223,9 +220,7 @@ function NeuralBackground({ activeSection, isLight }: { activeSection: string; i
         const pulse = reduceMotion ? 0 : Math.sin(frame * 0.018 + index * 0.7) * 0.08
         context.beginPath()
         context.arc(node.x, node.y, node.radius, 0, Math.PI * 2)
-        context.fillStyle = isLight
-          ? `rgba(64, 96, 108, ${0.24 + activity * 0.1 + pulse})`
-          : `rgba(145, 181, 195, ${0.3 + activity * 0.14 + pulse})`
+        context.fillStyle = `rgba(145, 181, 195, ${0.3 + activity * 0.14 + pulse})`
         context.fill()
       })
 
@@ -238,9 +233,7 @@ function NeuralBackground({ activeSection, isLight }: { activeSection: string; i
             context.beginPath()
             context.moveTo(node.x, node.y)
             context.lineTo(otherNode.x, otherNode.y)
-            context.strokeStyle = isLight
-              ? `rgba(70, 100, 112, ${(1 - distance / threshold) * 0.2 * activity})`
-              : `rgba(92, 126, 140, ${(1 - distance / threshold) * 0.28 * activity})`
+            context.strokeStyle = `rgba(92, 126, 140, ${(1 - distance / threshold) * 0.28 * activity})`
             context.lineWidth = 0.75
             context.stroke()
           }
@@ -250,7 +243,7 @@ function NeuralBackground({ activeSection, isLight }: { activeSection: string; i
       if (pointer.active) {
         context.beginPath()
         context.arc(pointer.x, pointer.y, 34, 0, Math.PI * 2)
-        context.strokeStyle = isLight ? "rgba(68, 97, 108, 0.2)" : "rgba(127, 159, 171, 0.22)"
+        context.strokeStyle = "rgba(127, 159, 171, 0.22)"
         context.lineWidth = 1
         context.stroke()
 
@@ -269,9 +262,7 @@ function NeuralBackground({ activeSection, isLight }: { activeSection: string; i
             context.beginPath()
             context.moveTo(pointer.x + directionX * 34, pointer.y + directionY * 34)
             context.lineTo(node.x, node.y)
-            context.strokeStyle = isLight
-              ? `rgba(68, 97, 108, ${(1 - distance / 260) * 0.14})`
-              : `rgba(127, 159, 171, ${(1 - distance / 260) * 0.16})`
+            context.strokeStyle = `rgba(127, 159, 171, ${(1 - distance / 260) * 0.16})`
             context.lineWidth = 0.65
             context.stroke()
           })
@@ -298,7 +289,7 @@ function NeuralBackground({ activeSection, isLight }: { activeSection: string; i
       document.documentElement.removeEventListener("pointerleave", handlePointerLeave)
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [activeSection, isLight, reduceMotion])
+  }, [activeSection, reduceMotion])
 
   return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-[2]" aria-hidden="true" />
 }
@@ -316,13 +307,6 @@ function SectionLabel({ index, children }: { index: string; children: ReactNode 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("home")
   const [menuOpen, setMenuOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
-  const { resolvedTheme, setTheme } = useTheme()
-  const isLight = mounted && resolvedTheme === "light"
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -344,13 +328,9 @@ export default function Portfolio() {
   }
 
   return (
-    <main
-      className={`min-h-screen overflow-hidden bg-ink-950 text-slate-200 selection:bg-steel-400/30 ${
-        isLight ? "portfolio-light" : ""
-      }`}
-    >
-      <NeuralBackground activeSection={activeSection} isLight={isLight} />
-      <div className="page-atmosphere pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_50%_35%,rgba(35,49,58,0.24),transparent_52%)]" />
+    <main className="min-h-screen overflow-hidden bg-ink-950 text-slate-200 selection:bg-steel-400/30">
+      <NeuralBackground activeSection={activeSection} />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_50%_35%,rgba(35,49,58,0.24),transparent_52%)]" />
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.012)_1px,transparent_1px)] bg-[size:72px_72px]" />
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-ink-950/80 backdrop-blur-xl">
@@ -498,7 +478,7 @@ export default function Portfolio() {
         <div className="mx-auto max-w-7xl">
           <SectionLabel index="02">Experience + Capabilities</SectionLabel>
           <div className="grid gap-16 lg:grid-cols-[1.3fr_0.7fr]">
-            <div>
+            <div className="-mx-4 bg-ink-950/55 px-4 backdrop-blur-[1px]">
               {experience.map((item, index) => (
                 <motion.article
                   key={`${item.company}-${item.period}`}
@@ -508,11 +488,13 @@ export default function Portfolio() {
                   transition={{ delay: index * 0.05 }}
                   className="group grid gap-4 border-t border-white/[0.08] py-7 sm:grid-cols-[140px_1fr]"
                 >
-                  <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-steel-300">{item.period}</p>
+                  <p className="font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-steel-200">
+                    {item.period}
+                  </p>
                   <div>
-                    <h3 className="text-lg font-medium text-slate-200">{item.role}</h3>
-                    <p className="mt-1 text-sm text-slate-400">{item.company}</p>
-                    <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-400">
+                    <h3 className="text-lg font-medium text-slate-100">{item.role}</h3>
+                    <p className="mt-1 text-[15px] text-slate-300">{item.company}</p>
+                    <p className="mt-4 max-w-2xl text-[15px] leading-7 text-slate-300">
                       {item.description}
                     </p>
                   </div>
@@ -521,7 +503,9 @@ export default function Portfolio() {
             </div>
 
             <div className="lg:pl-10">
-              <p className="mb-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">Technical domains</p>
+              <p className="mb-5 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-slate-300">
+                Technical domains
+              </p>
               <div className="space-y-px bg-white/[0.06]">
                 <Capability icon={<BrainCircuit size={18} />} title="Machine Learning" items="PyTorch · TensorFlow · Scikit-learn" />
                 <Capability icon={<Dna size={18} />} title="Computational Biology" items="Genomics · Single-cell · Protein design" />
@@ -656,19 +640,6 @@ export default function Portfolio() {
             >
               <Linkedin size={16} />
             </a>
-            <span className="h-4 w-px bg-white/10" />
-            <button
-              type="button"
-              onClick={() => setTheme(isLight ? "dark" : "light")}
-              className="flex items-center gap-2 transition hover:text-steel-200"
-              aria-label={`Switch to ${isLight ? "dark" : "light"} mode`}
-              title={`Switch to ${isLight ? "dark" : "light"} mode`}
-            >
-              {isLight ? <Moon size={16} /> : <Sun size={16} />}
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                {isLight ? "Dark" : "Light"}
-              </span>
-            </button>
           </div>
         </div>
       </footer>
@@ -679,11 +650,11 @@ export default function Portfolio() {
 function Capability({ icon, title, items }: { icon: ReactNode; title: string; items: string }) {
   return (
     <div className="bg-ink-950 p-5">
-      <div className="flex items-center gap-3 text-steel-300">
+      <div className="flex items-center gap-3 text-steel-200">
         {icon}
-        <h3 className="text-sm font-medium text-slate-300">{title}</h3>
+        <h3 className="text-[15px] font-medium text-slate-200">{title}</h3>
       </div>
-      <p className="mt-3 pl-[30px] text-xs leading-5 text-slate-400">{items}</p>
+      <p className="mt-3 pl-[30px] text-[13px] leading-5 text-slate-300">{items}</p>
     </div>
   )
 }
