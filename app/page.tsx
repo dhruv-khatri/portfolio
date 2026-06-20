@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { motion, useReducedMotion } from "framer-motion"
+import { useTheme } from "next-themes"
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -13,6 +14,8 @@ import {
   Linkedin,
   Mail,
   Menu,
+  Moon,
+  Sun,
   X,
 } from "lucide-react"
 import Image from "next/image"
@@ -107,7 +110,7 @@ const projects = [
   },
 ]
 
-function NeuralBackground({ activeSection }: { activeSection: string }) {
+function NeuralBackground({ activeSection, isLight }: { activeSection: string; isLight: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const reduceMotion = useReducedMotion()
 
@@ -220,7 +223,9 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
         const pulse = reduceMotion ? 0 : Math.sin(frame * 0.018 + index * 0.7) * 0.08
         context.beginPath()
         context.arc(node.x, node.y, node.radius, 0, Math.PI * 2)
-        context.fillStyle = `rgba(145, 181, 195, ${0.3 + activity * 0.14 + pulse})`
+        context.fillStyle = isLight
+          ? `rgba(64, 96, 108, ${0.24 + activity * 0.1 + pulse})`
+          : `rgba(145, 181, 195, ${0.3 + activity * 0.14 + pulse})`
         context.fill()
       })
 
@@ -233,7 +238,9 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
             context.beginPath()
             context.moveTo(node.x, node.y)
             context.lineTo(otherNode.x, otherNode.y)
-            context.strokeStyle = `rgba(92, 126, 140, ${(1 - distance / threshold) * 0.28 * activity})`
+            context.strokeStyle = isLight
+              ? `rgba(70, 100, 112, ${(1 - distance / threshold) * 0.2 * activity})`
+              : `rgba(92, 126, 140, ${(1 - distance / threshold) * 0.28 * activity})`
             context.lineWidth = 0.75
             context.stroke()
           }
@@ -243,7 +250,7 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
       if (pointer.active) {
         context.beginPath()
         context.arc(pointer.x, pointer.y, 34, 0, Math.PI * 2)
-        context.strokeStyle = "rgba(127, 159, 171, 0.22)"
+        context.strokeStyle = isLight ? "rgba(68, 97, 108, 0.2)" : "rgba(127, 159, 171, 0.22)"
         context.lineWidth = 1
         context.stroke()
 
@@ -262,7 +269,9 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
             context.beginPath()
             context.moveTo(pointer.x + directionX * 34, pointer.y + directionY * 34)
             context.lineTo(node.x, node.y)
-            context.strokeStyle = `rgba(127, 159, 171, ${(1 - distance / 260) * 0.16})`
+            context.strokeStyle = isLight
+              ? `rgba(68, 97, 108, ${(1 - distance / 260) * 0.14})`
+              : `rgba(127, 159, 171, ${(1 - distance / 260) * 0.16})`
             context.lineWidth = 0.65
             context.stroke()
           })
@@ -289,7 +298,7 @@ function NeuralBackground({ activeSection }: { activeSection: string }) {
       document.documentElement.removeEventListener("pointerleave", handlePointerLeave)
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [activeSection, reduceMotion])
+  }, [activeSection, isLight, reduceMotion])
 
   return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-[2]" aria-hidden="true" />
 }
@@ -307,6 +316,13 @@ function SectionLabel({ index, children }: { index: string; children: ReactNode 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("home")
   const [menuOpen, setMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const { resolvedTheme, setTheme } = useTheme()
+  const isLight = mounted && resolvedTheme === "light"
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -328,9 +344,13 @@ export default function Portfolio() {
   }
 
   return (
-    <main className="min-h-screen overflow-hidden bg-ink-950 text-slate-200 selection:bg-steel-400/30">
-      <NeuralBackground activeSection={activeSection} />
-      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_50%_35%,rgba(35,49,58,0.24),transparent_52%)]" />
+    <main
+      className={`min-h-screen overflow-hidden bg-ink-950 text-slate-200 selection:bg-steel-400/30 ${
+        isLight ? "portfolio-light" : ""
+      }`}
+    >
+      <NeuralBackground activeSection={activeSection} isLight={isLight} />
+      <div className="page-atmosphere pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_50%_35%,rgba(35,49,58,0.24),transparent_52%)]" />
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.012)_1px,transparent_1px)] bg-[size:72px_72px]" />
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-ink-950/80 backdrop-blur-xl">
@@ -636,6 +656,19 @@ export default function Portfolio() {
             >
               <Linkedin size={16} />
             </a>
+            <span className="h-4 w-px bg-white/10" />
+            <button
+              type="button"
+              onClick={() => setTheme(isLight ? "dark" : "light")}
+              className="flex items-center gap-2 transition hover:text-steel-200"
+              aria-label={`Switch to ${isLight ? "dark" : "light"} mode`}
+              title={`Switch to ${isLight ? "dark" : "light"} mode`}
+            >
+              {isLight ? <Moon size={16} /> : <Sun size={16} />}
+              <span className="font-mono text-[10px] uppercase tracking-[0.12em]">
+                {isLight ? "Dark" : "Light"}
+              </span>
+            </button>
           </div>
         </div>
       </footer>

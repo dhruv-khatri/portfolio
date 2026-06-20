@@ -68,3 +68,65 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.portfolio-light {
+  background: #edf0ef !important;
+  color: #243038 !important;
+}
+
+.portfolio-light .page-atmosphere {
+  background: radial-gradient(circle at 50% 35%, rgba(85, 110, 119, 0.13), transparent 54%);
+}
+
+.portfolio-light .bg-ink-950,
+.portfolio-light .bg-ink-950\/70,
+.portfolio-light .bg-ink-950\/80 {
+  background-color: rgba(237, 240, 239, 0.88) !important;
+}
+
+.portfolio-light .bg-ink-900,
+.portfolio-light .bg-ink-900\/70 {
+  background-color: rgba(225, 230, 229, 0.9) !important;
+}
+
+.portfolio-light .text-white,
+.portfolio-light .text-slate-100,
+.portfolio-light .text-slate-200 {
+  color: #172229 !important;
+}
+
+.portfolio-light .text-slate-300 {
+  color: #2f3e46 !important;
+}
+
+.portfolio-light .text-slate-400 {
+  color: #4b5d66 !important;
+}
+
+.portfolio-light .text-slate-500,
+.portfolio-light .text-slate-600 {
+  color: #60727a !important;
+}
+
+.portfolio-light .text-steel-200,
+.portfolio-light .text-steel-300 {
+  color: #3f6978 !important;
+}
+
+.portfolio-light [class*="border-white"] {
+  border-color: rgba(39, 55, 63, 0.16) !important;
+}
+
+.portfolio-light .border-slate-600,
+.portfolio-light .border-slate-700 {
+  border-color: rgba(39, 55, 63, 0.28) !important;
+}
+
+.portfolio-light .bg-white\/10 {
+  background-color: rgba(39, 55, 63, 0.16) !important;
+}
+
+.portfolio-light .from-ink-950 {
+  --tw-gradient-from: #cfd6d4 var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(207 214 212 / 0) var(--tw-gradient-to-position) !important;
+}

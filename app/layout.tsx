@@ -14,9 +14,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem={false}
-          storageKey="portfolio-theme-v2"
+          storageKey="portfolio-theme-v3"
         >
           {children}
         </ThemeProvider>
