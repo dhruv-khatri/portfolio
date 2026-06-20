@@ -405,8 +405,7 @@ export default function Portfolio() {
               Building computational systems for biological discovery.
             </h1>
             <p className="mt-8 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
-              Computational biology, machine learning, and software development applied to complex biological
-              problems and scientific discovery.
+              Computational biology and machine learning applied to scientific discovery.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <button
