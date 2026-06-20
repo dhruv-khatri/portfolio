@@ -586,13 +586,27 @@ export default function Portfolio() {
                 Interested in computational research, AI, or building something useful?
               </h2>
             </div>
-            <a
-              href="mailto:dkhatri383@gmail.com"
-              className="group flex w-fit items-center gap-5 border-b border-slate-500 pb-3 text-lg text-slate-300 transition hover:border-steel-300 hover:text-white"
-            >
-              Send an email
-              <ArrowUpRight size={20} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
+            <div className="flex flex-col gap-4">
+              {[
+                { label: "Email", href: "mailto:dkhatri383@gmail.com" },
+                { label: "LinkedIn", href: "https://www.linkedin.com/in/dhruvkhatri" },
+                { label: "GitHub", href: "https://github.com/dhruv-khatri" },
+              ].map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                  className="group flex min-w-48 items-center justify-between gap-8 border-b border-slate-600 pb-3 text-lg text-slate-300 transition hover:border-steel-300 hover:text-white"
+                >
+                  {link.label}
+                  <ArrowUpRight
+                    size={20}
+                    className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
