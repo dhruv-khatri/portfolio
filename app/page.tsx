@@ -405,8 +405,8 @@ export default function Portfolio() {
               Building computational systems for biological discovery.
             </h1>
             <p className="mt-8 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
-              I specialize in computational biology, machine learning, and software development to solve complex
-              biological problems and advance scientific research.
+              Computational biology, machine learning, and software development applied to complex biological
+              problems and scientific discovery.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <button
@@ -451,16 +451,12 @@ export default function Portfolio() {
             </h2>
             <div className="max-w-3xl">
               <p className="text-xl leading-8 text-slate-300 md:text-2xl md:leading-10">
-                I&apos;m a computer and data scientist focused on applying computational techniques to biomedical and
-                biological research. With a foundation in computer science, data engineering, and molecular biology,
-                I design scalable algorithms and analytical tools to extract insights from high-dimensional
-                biological datasets.
+                I develop computational and machine-learning systems for biomedical research, combining expertise in
+                computer science, data engineering, and molecular biology.
               </p>
               <p className="mt-7 max-w-2xl leading-7 text-slate-400">
-                My work spans machine learning applications in healthcare, large-scale genomic data analysis, and
-                AI-driven pipelines for predictive modeling. I&apos;m especially interested in single-cell omics,
-                integrative multi-modal analysis, and deep learning for protein function, gene regulation, and disease
-                mechanisms.
+                My work focuses on scalable biological data analysis, AI-driven discovery, genomics, and predictive
+                modeling.
               </p>
               <div className="mt-12 grid gap-px bg-white/[0.06] sm:grid-cols-3">
                 {[
