@@ -12,7 +12,6 @@ import {
   Github,
   Linkedin,
   Mail,
-  MapPin,
   Menu,
   X,
 } from "lucide-react"
@@ -406,8 +405,8 @@ export default function Portfolio() {
               Building computational systems for biological discovery.
             </h1>
             <p className="mt-8 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
-              I design machine-learning models, data pipelines, and research software that turn complex biological
-              data into useful decisions.
+              I specialize in computational biology, machine learning, and software development to solve complex
+              biological problems and advance scientific research.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <button
@@ -439,9 +438,6 @@ export default function Portfolio() {
                 {item}
               </div>
             ))}
-            <div className="mt-5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-slate-400">
-              <MapPin size={12} /> San Diego, California
-            </div>
           </motion.div>
         </div>
       </section>
@@ -451,16 +447,20 @@ export default function Portfolio() {
           <SectionLabel index="01">Profile</SectionLabel>
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
             <h2 className="max-w-sm text-3xl font-medium tracking-[-0.03em] text-slate-100 md:text-4xl">
-              Computation as a tool for understanding complex systems.
+              Applying computation to biomedical and biological research.
             </h2>
             <div className="max-w-3xl">
               <p className="text-xl leading-8 text-slate-300 md:text-2xl md:leading-10">
-                I work at the intersection of computer science, machine learning, and molecular biology—building
-                systems that make high-dimensional scientific data interpretable and actionable.
+                I&apos;m a computer and data scientist focused on applying computational techniques to biomedical and
+                biological research. With a foundation in computer science, data engineering, and molecular biology,
+                I design scalable algorithms and analytical tools to extract insights from high-dimensional
+                biological datasets.
               </p>
               <p className="mt-7 max-w-2xl leading-7 text-slate-400">
-                My interests include AI-assisted discovery, genomic analysis, protein engineering, single-cell
-                methods, and the infrastructure required to move computational research from experiment to impact.
+                My work spans machine learning applications in healthcare, large-scale genomic data analysis, and
+                AI-driven pipelines for predictive modeling. I&apos;m especially interested in single-cell omics,
+                integrative multi-modal analysis, and deep learning for protein function, gene regulation, and disease
+                mechanisms.
               </p>
               <div className="mt-12 grid gap-px bg-white/[0.06] sm:grid-cols-3">
                 {[
