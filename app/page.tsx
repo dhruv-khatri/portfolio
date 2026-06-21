@@ -12,6 +12,7 @@ import {
   Github,
   Linkedin,
   Mail,
+  MapPin,
   Menu,
   X,
 } from "lucide-react"
@@ -437,6 +438,10 @@ export default function Portfolio() {
                 {item}
               </div>
             ))}
+            <div className="mt-5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-slate-400">
+              <MapPin size={13} className="text-steel-300" />
+              San Diego, CA
+            </div>
           </motion.div>
         </div>
       </section>
